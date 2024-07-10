@@ -1,10 +1,25 @@
 import numpy as np
 import torch
 import h5py
+import os
 
 from config import config
 from functions.total_variation_regularization import tv
 from functions.pytorch_radon import get_operators
+
+
+if not os.path.exists('data'):
+    os.makedirs('data')
+
+if not os.path.exists('data/phantom'):
+    os.makedirs('data/phantom')
+    
+if not os.path.exists('data/fbp'):
+    os.makedirs('data/fbp')
+
+if not os.path.exists('data/init_regul'):
+    os.makedirs('data/init_regul')
+
 
 
 image_size = config.image_size

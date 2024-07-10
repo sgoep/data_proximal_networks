@@ -1,18 +1,19 @@
 import torch
+import numpy as np
 
 class config:
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     
     image_size = 128
-    ran_angles = torch.pi/3
+    ran_angles = np.pi/3
     n_angles   = 120
     
-    delta = 0.05
+    delta = 0.03
     alpha = 0.1
 
-    len_train  = 1
-    len_test   = 1
-    num_epochs = 2
+    len_train  = 500
+    len_test   = 100
+    num_epochs = 50
     batch_size = 4
     shuffle = True
     num_workers = 4

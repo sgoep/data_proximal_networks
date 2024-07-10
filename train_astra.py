@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from misc.unet import UNet
+from misc.unet_astra import UNet
 from misc.data_loader import DataLoader
 from config import config
 
@@ -132,8 +132,8 @@ def start_training(CONSTRAINT, INITRECON):
 
 if __name__ == "__main__":
 
-    start_training(False, False)
-    start_training(False, True)
+    # start_training(False, False)
+    # start_training(False, True)
     start_training(True, False)
     start_training(True, True)
     

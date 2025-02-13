@@ -1,27 +1,39 @@
-import os
-from os import listdir
-from os.path import isfile, join
-
 import h5py  # type: ignore
-import matplotlib.pyplot as plt
 import numpy as np  # type: ignore
 import torch  # type: ignore
 import torch_radon
-from pytorch_wavelets import DWTForward, DWTInverse
-from scipy import stats
 
 # from config import config
 from src.algorithms.ell1_shearlet import ell1_shearlet
-from src.algorithms.ell1_wavelet import ell1_wavelet
 from src.algorithms.my_shearlet import ShearletTransform
 from src.algorithms.total_variation import tv
-from src.data.create_data import run_create_data
 from src.utils.load_config import load_config
-from src.utils.load_data import read_h5_file
 from src.utils.radon_operator import filter_sinogram, get_radon_operators
 
 
 def create_data_synthetic():
+    """
+    Generates and processes synthetic Shepp-Logan phantom data for reconstruction experiments.
+
+    This function:
+    - Loads configuration settings for the synthetic dataset.
+    - Applies the Radon transform to synthetic phantom images.
+    - Adds Gaussian noise to the sinograms to simulate real-world conditions.
+    - Performs multiple reconstruction methods:
+        - **Filtered Back Projection (FBP)**
+        - **Landweber Iteration**
+        - **Total Variation (TV) Minimization**
+        - **ℓ₁-Regularized Shearlet Reconstruction**
+    - Saves the processed data for further analysis.
+
+    The dataset consists of 1500 synthetic images that undergo forward projection and reconstruction.
+
+    Args:
+        None
+
+    Returns:
+        None. Saves processed data as `.npy` files in `data/data_synthetic/`.
+    """
     config = load_config("synthetic")
     _, radon_limited, _ = get_radon_operators("synthetic")
 

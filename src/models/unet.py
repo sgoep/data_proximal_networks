@@ -14,7 +14,7 @@ from src.utils.radon_operator import filter_sinogram, get_radon_operators
 def gaussian_kernel1d(sigma, size=5):
     """Creates a 1D Gaussian kernel."""
     x = torch.arange(-size // 2 + 1, size // 2 + 1).float()
-    kernel = torch.exp(-0.5 * (x / sigma)**2)
+    kernel = torch.exp(-0.5 * (x / sigma) ** 2)
     kernel /= kernel.sum()  # Normalize
     return kernel
 
@@ -34,14 +34,14 @@ def chi_func(angles, phi, m, smooth=False, sigma=10, kernel_size=50):
         chi = chi[None, None, :]  # Reshape chi to [batch, channels, width]
         chi = F.conv1d(chi, kernel, padding="same")
         chi = chi[0, 0, :]  # Remove added dimensions
-        chi[0:torch.argmax(chi)] = 1
+        chi[0 : torch.argmax(chi)] = 1
     chi = chi[:, None]
     chi = torch.repeat_interleave(chi, m, dim=1).unsqueeze(0)
     # chi = torch.repeat_interleave(chi, n, dim=0).unsqueeze(1)
     return chi
 
 
-class data_prox_func():
+class data_prox_func:
     def __init__(self, norm):
         self.beta = norm
 
@@ -57,11 +57,11 @@ class data_prox_func():
         return Y
 
 
-class projections():
+class projections:
     def __init__(self, config, smooth=False):
         self.chi = chi_func(
-            config.angles_full, config.phi_limited, config.det_count,
-            smooth=smooth).to(config.device)
+            config.angles_full, config.phi_limited, config.det_count, smooth=smooth
+        ).to(config.device)
 
     def _proj(self, X):
         Y = torch.zeros_like(X).cuda()
@@ -102,34 +102,19 @@ class DoubleConv(nn.Module):
     """
 
     def __init__(
-        self,
-        in_channels: int,
-        out_channels: int,
-        mid_channels: Optional[int] = None
+        self, in_channels: int, out_channels: int, mid_channels: Optional[int] = None
     ):
 
         super().__init__()
         if not mid_channels:
             mid_channels = out_channels
         self.double_conv = nn.Sequential(
-            nn.Conv2d(
-                in_channels,
-                mid_channels,
-                kernel_size=3,
-                padding=1,
-                bias=False
-            ),
+            nn.Conv2d(in_channels, mid_channels, kernel_size=3, padding=1, bias=False),
             # nn.BatchNorm2d(mid_channels),
             nn.ReLU(inplace=True),
-            nn.Conv2d(
-                mid_channels,
-                out_channels,
-                kernel_size=3,
-                padding=1,
-                bias=False
-            ),
+            nn.Conv2d(mid_channels, out_channels, kernel_size=3, padding=1, bias=False),
             # nn.BatchNorm2d(out_channels),
-            nn.ReLU(inplace=True)
+            nn.ReLU(inplace=True),
         )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -160,8 +145,7 @@ class Down(nn.Module):
     def __init__(self, in_channels: int, out_channels: int):
         super().__init__()
         self.maxpool_conv = nn.Sequential(
-            nn.MaxPool2d(2),
-            DoubleConv(in_channels, out_channels)
+            nn.MaxPool2d(2), DoubleConv(in_channels, out_channels)
         )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -192,17 +176,13 @@ class Up(nn.Module):
         applies a double convolution.
     """
 
-    def __init__(
-        self, in_channels: int, out_channels: int, bilinear: bool = True
-    ):
+    def __init__(self, in_channels: int, out_channels: int, bilinear: bool = True):
         super().__init__()
 
         # if bilinear, use the normal convolutions to reduce the number of
         # channels
         if bilinear:
-            self.up = nn.Upsample(
-                scale_factor=2, mode='bilinear', align_corners=True
-            )
+            self.up = nn.Upsample(scale_factor=2, mode="bilinear", align_corners=True)
             self.conv = DoubleConv(in_channels, out_channels, in_channels // 2)
         else:
             self.up = nn.ConvTranspose2d(
@@ -216,8 +196,7 @@ class Up(nn.Module):
         diffY = x2.size()[2] - x1.size()[2]
         diffX = x2.size()[3] - x1.size()[3]
 
-        x1 = F.pad(x1, [diffX // 2, diffX - diffX // 2,
-                        diffY // 2, diffY - diffY // 2])
+        x1 = F.pad(x1, [diffX // 2, diffX - diffX // 2, diffY // 2, diffY - diffY // 2])
         # if you have padding issues, see
         # https://github.com/HaiyongJiang/U-Net-Pytorch-Unstructured-Buggy/commit/0e854509c2cea854e247a9c615f175f76fbb2e3a
         # https://github.com/xiaopeng-liao/Pytorch-UNet/commit/8ebac70e633bac59fc22bb5195e513d5832fb3bd
@@ -242,6 +221,7 @@ class OutConv(nn.Module):
     forward(x: torch.Tensor) -> torch.Tensor
         Applies the 1x1 convolution and returns the output.
     """
+
     def __init__(self, in_channels: int, out_channels: int):
         super(OutConv, self).__init__()
         self.conv = nn.Conv2d(in_channels, out_channels, kernel_size=1)
@@ -293,6 +273,7 @@ class UNet(nn.Module):
         Passes the input through the U-Net, applies optional constraints, and
         returns the output tensor.
     """
+
     def __init__(
         self,
         n_channels: int,
@@ -347,8 +328,12 @@ class UNet(nn.Module):
         res = self.outc(x)
 
         if True:
-            if self.model_name in ["fbp_X_res", "tv_X_res",
-                                   "ell1_X_res", "landweber_X_res"]:
+            if self.model_name in [
+                "fbp_X_res",
+                "tv_X_res",
+                "ell1_X_res",
+                "landweber_X_res",
+            ]:
                 # RESNet
                 return x0 + res
 
@@ -363,10 +348,10 @@ class UNet(nn.Module):
                 # DP NSN
                 res_data = self.radon_full.forward(res)
                 res_ran = self.data_prox_func.forward(
-                    self.projections.range_projection(res_data))
+                    self.projections.range_projection(res_data)
+                )
                 res_nsn = self.projections.null_space_projection(res_data)
-                res = self.radon_full.backward(
-                    filter_sinogram(res_ran + res_nsn))
+                res = self.radon_full.backward(filter_sinogram(res_ran + res_nsn))
                 return x0 + res
 
             else:

@@ -1,9 +1,6 @@
-import os
 from os import listdir
 from os.path import isfile, join
 
-import h5py  # type: ignore
-import matplotlib.pyplot as plt
 import numpy as np  # type: ignore
 import torch  # type: ignore
 import torch_radon
@@ -11,11 +8,8 @@ from pytorch_wavelets import DWTForward, DWTInverse
 from scipy import stats
 
 # from config import config
-from src.algorithms.ell1_shearlet import ell1_shearlet
 from src.algorithms.ell1_wavelet import ell1_wavelet
-from src.algorithms.my_shearlet import ShearletTransform
 from src.algorithms.total_variation import tv
-from src.data.create_data import run_create_data
 from src.utils.load_config import load_config
 from src.utils.load_data import read_h5_file
 from src.utils.radon_operator import filter_sinogram, get_radon_operators
@@ -32,6 +26,29 @@ L = [
 
 
 def create_data_lodopab():
+    """
+    Generates and processes training, validation, and test data for the LoDoPaB dataset.
+
+    This function:
+    - Loads configuration settings for the dataset.
+    - Applies the Radon transform to ground truth images.
+    - Computes limited-angle sinograms with estimated noise.
+    - Performs multiple reconstruction methods (FBP, Landweber, TV, ℓ₁-wavelet).
+    - Saves the processed data for further analysis.
+
+    The reconstructions include:
+    - **Filtered Back Projection (FBP)**
+    - **Landweber Iteration**
+    - **Total Variation (TV) Minimization**
+    - **ℓ₁-Regularized Wavelet Reconstruction**
+
+    Args:
+        None
+
+    Returns:
+        None. Saves processed data as `.npy` files in `data/data_lodopab/data_processed/`.
+    """
+
     print("Start data creation.")
 
     config = load_config("lodopab")

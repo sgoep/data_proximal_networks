@@ -3,7 +3,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def visualization_with_zoom(example: str, x: np.ndarray, zoom: bool, colorbar: bool, name: str) -> None:
+def visualization_with_zoom(
+    example: str, x: np.ndarray, zoom: bool, colorbar: bool, name: str
+) -> None:
     """
     Visualizes a 2D array with optional zoomed-in region and colorbar.
 
@@ -58,7 +60,9 @@ def visualization_with_zoom(example: str, x: np.ndarray, zoom: bool, colorbar: b
     plt.axis("off")
 
     if zoom:
-        rect = patches.Rectangle((c, a), d - c, b - a, linewidth=1.5, edgecolor="r", facecolor="none")
+        rect = patches.Rectangle(
+            (c, a), d - c, b - a, linewidth=1.5, edgecolor="r", facecolor="none"
+        )
         ax.add_patch(rect)
         if example == "lodopab":
             sub_axes = plt.axes([0.23, 0.075, 0.25, 0.25])  # type: ignore

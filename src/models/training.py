@@ -3,49 +3,8 @@ from typing import List
 import numpy as np  # type: ignore
 import torch  # type: ignore
 
-# from config import config
-# from src.models.model_output import (calc_dp_output, calc_dp_X_output,
-#                                      calc_nsn_output, calc_res_output,
-#                                      calc_single_dp_output)
-from src.models.model_output import (calc_nsn_output, calc_onlydp_output,
-                                     calc_res_output, calc_single_dp_output)
 from src.models.utils import get_data_loader, get_model, plot_losses
 from src.utils.radon_operator import get_radon_operators
-
-
-def calc_output(
-    model_name, model, X, Y, Z,
-    radon_full, radon_limited, radon_null_space, config
-):
-    X = X.to(device=config.device, dtype=torch.float)
-    Y = Y.to(device=config.device, dtype=torch.float)
-    Z = Z.to(device=config.device, dtype=torch.float)
-
-    if model_name in [
-        "fbp_X_res", "tv_X_res", "ell1_X_res", "fbp_res", "tv_res", "ell1_res",
-        "landweber_X_res"
-    ]:
-        model_output, X_output = calc_res_output(
-            model_name, model, X, Y, radon_full, config
-        )
-    elif model_name in ["fbp_nsn", "tv_nsn", "ell1_nsn", "landweber_nsn"]:
-        model_output, X_output = calc_nsn_output(
-            model_name, model, X, Y, Z,
-            radon_full, radon_limited, radon_null_space, config
-        )
-    elif model_name.split("_")[1] == "single":
-        model_output, X_output = calc_single_dp_output(
-            model_name, model, X, Y, Z,
-            radon_full, radon_limited, radon_null_space, config
-        )
-    elif model_name.split("_")[1] == "onlydp":
-        model_output, X_output = calc_onlydp_output(
-            model_name, model, X, Y, Z,
-            radon_full, radon_limited, radon_null_space, config
-        )
-    else:
-        raise ValueError(f"Unknown model {model_name}.")
-    return model_output, X_output
 
 
 def train(example: str, model_name: str, config):
@@ -68,16 +27,15 @@ def train(example: str, model_name: str, config):
 
     radon_full, radon_limited, radon_null_space = get_radon_operators(example)
 
-    best_test_loss = float('inf')
+    best_test_loss = float("inf")
     best_model_params = None
 
-    model, optimizer, error = get_model(
-        config.training_params, model_name, example)
+    model, optimizer, error = get_model(config.training_params, model_name, example)
     TrainDataGen, TestDataGen = get_data_loader(
         example, initrecon, initial_regul, config
     )
 
-    best_test_loss = float('inf')
+    best_test_loss = float("inf")
     best_model_params = None
 
     torch.cuda.empty_cache()
@@ -85,22 +43,13 @@ def train(example: str, model_name: str, config):
     train_loss_list = np.zeros(config.epochs)
     test_loss_list = np.zeros(config.epochs)
 
-    for epoch in np.arange(1, config.epochs+1):
+    for epoch in np.arange(1, config.epochs + 1):
         train_loss = 0.0
         test_loss = 0.0
 
         model.train()
         for X, Y, Z in TrainDataGen:
 
-            # model_output, X_output = calc_output(
-            #     model_name,
-            #     model,
-            #     X, Y, Z,
-            #     radon_full,
-            #     radon_limited,
-            #     radon_null_space,
-            #     config
-            # )
             X = X.to(device=config.device, dtype=torch.float)
             Y = Y.to(device=config.device, dtype=torch.float)
             output = model(Y)
@@ -115,15 +64,6 @@ def train(example: str, model_name: str, config):
             model.eval()
             for X, Y, Z in TestDataGen:
 
-                # model_output, X_output = calc_output(
-                #     model_name,
-                #     model,
-                #     X, Y, Z,
-                #     radon_full,
-                #     radon_limited,
-                #     radon_null_space,
-                #     config
-                # )
                 X = X.to(device=config.device, dtype=torch.float)
                 Y = Y.to(device=config.device, dtype=torch.float)
                 output = model(Y)
@@ -132,8 +72,8 @@ def train(example: str, model_name: str, config):
 
                 test_loss += loss.data.item()
 
-            train_loss = train_loss/config.len_train
-            test_loss = test_loss/config.len_test
+            train_loss = train_loss / config.len_train
+            test_loss = test_loss / config.len_test
 
             if test_loss < best_test_loss:
                 best_epoch = epoch
@@ -141,42 +81,40 @@ def train(example: str, model_name: str, config):
                 best_model_params = model.state_dict().copy()
                 if config.factor is not None:
                     torch.save(
-                        best_model_params, f"models/{example}/{model_name}_factor_{config.factor}.pth"
+                        best_model_params,
+                        f"models/{example}/{model_name}_factor_{config.factor}.pth",
                     )
                 else:
-                    torch.save(
-                        best_model_params, f"models/{example}/{model_name}.pth"
-                    )
+                    torch.save(best_model_params, f"models/{example}/{model_name}.pth")
 
         print(
             f"Epoch [{epoch}/{config.epochs}], Train Loss: {train_loss:.8f} "
             f"and Test Loss: {test_loss:.8f}"
         )
 
-        train_loss_list[epoch-1] = train_loss
-        test_loss_list[epoch-1] = test_loss
+        train_loss_list[epoch - 1] = train_loss
+        test_loss_list[epoch - 1] = test_loss
         if config.factor is not None:
             plot_losses(
                 train_loss_list[1:],
                 test_loss_list[1:],
-                f"losses/{example}_loss_{model_name}_factor_{config.factor}.pdf"
+                f"losses/{example}_loss_{model_name}_factor_{config.factor}.pdf",
             )
         else:
             plot_losses(
                 train_loss_list[1:],
                 test_loss_list[1:],
-                f"losses/{example}_loss_{model_name}.pdf"
+                f"losses/{example}_loss_{model_name}.pdf",
             )
 
     print(f"Saving model {model_name}, best epoch: {best_epoch}.")
     if config.factor is not None:
         torch.save(
-            best_model_params, f"models/{example}/{model_name}_factor_{config.factor}.pth"
+            best_model_params,
+            f"models/{example}/{model_name}_factor_{config.factor}.pth",
         )
     else:
-        torch.save(
-            best_model_params, f"models/{example}/{model_name}.pth"
-        )
+        torch.save(best_model_params, f"models/{example}/{model_name}.pth")
 
     print("############################################################## ")
 
@@ -189,13 +127,14 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Training inputs.")
     parser.add_argument("example", type=str, help="Which example.")
-    parser.add_argument("model_names", type=parse_nested_list, nargs='?')
+    parser.add_argument("model_names", type=parse_nested_list, nargs="?")
 
     # Parse arguments from the command line
     args = parser.parse_args()
 
     if args.model_names is None:
         from example import models
+
         model_names = models
 
     config = load_config(args.example)
@@ -216,6 +155,6 @@ if __name__ == "__main__":
             example=args.example,
             model_name=model_name,
             # initial_regul=model_name[1],
-            config=config
+            config=config,
         )
     print(f"Training completed for {args.example}.")

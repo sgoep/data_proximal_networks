@@ -23,7 +23,9 @@ def generate_latex_figure_block(image_filenames, captions, labels, figures_per_r
 
         # Create a subfigure block for each image
         latex_code += "  \\begin{subfigure}{\\figwidth}\n"
-        latex_code += f"    \\includegraphics[width=\\textwidth]{{images/{image_file}}}\n"
+        latex_code += (
+            f"    \\includegraphics[width=\\textwidth]{{images/{image_file}}}\n"
+        )
         latex_code += f"    \\caption{{{captions[i]}}}\n"
         latex_code += f"    \\label{{{labels[i]}}}\n"
         latex_code += "  \\end{subfigure}\n"

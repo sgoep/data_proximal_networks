@@ -39,7 +39,9 @@ class config_lodopab:
     # num_angles_null_space = len(angles_null_space)
     factor = None
     if Path("data/data_lodopab/data_processed/train/norm.npy").is_file():
-        norm = torch.Tensor(np.load("data/data_lodopab/data_processed/train/norm.npy")).to(device)
+        norm = torch.Tensor(
+            np.load("data/data_lodopab/data_processed/train/norm.npy")
+        ).to(device)
     # norm = "x"
 
 
@@ -80,32 +82,32 @@ class config_synthetic:
         norm = torch.Tensor(np.load("data/data_synthetic/norm.npy")).to(device)
 
 
-class config_lotus:
-    device: torch.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# class config_lotus:
+#     device: torch.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    N = 256
-    num_detectors = 429
-    det_spacing = 540 / 630
-    source_distance = 2240 * 540 / 120
-    clip_to_circle = False
-    det_count = 429
-    fan_sensor_spacing = 540 / 630
+#     N = 256
+#     num_detectors = 429
+#     det_spacing = 540 / 630
+#     source_distance = 2240 * 540 / 120
+#     clip_to_circle = False
+#     det_count = 429
+#     fan_sensor_spacing = 540 / 630
 
-    phi_limited = 3 * np.pi / 4
-    # phi_limited = np.pi
-    phi_full = np.pi
+#     phi_limited = 3 * np.pi / 4
+#     # phi_limited = np.pi
+#     phi_full = np.pi
 
-    num_angles_full = 120
-    angles_full = np.linspace(0, 360, num_angles_full, endpoint=False) * np.pi / 180
+#     num_angles_full = 120
+#     angles_full = np.linspace(0, 360, num_angles_full, endpoint=False) * np.pi / 180
 
-    angles_limited = angles_full[angles_full <= phi_limited]
-    num_angles_limited = len(angles_limited)
+#     angles_limited = angles_full[angles_full <= phi_limited]
+#     num_angles_limited = len(angles_limited)
 
-    angles_null_space = angles_full[angles_full > phi_limited]
-    num_angles_null_space = len(angles_null_space)
+#     angles_null_space = angles_full[angles_full > phi_limited]
+#     num_angles_null_space = len(angles_null_space)
 
-    if Path("data/data_synthetic/norm.npy").is_file():
-        norm = torch.Tensor(np.load("data/data_synthetic/norm.npy")).to(device)
+#     if Path("data/data_synthetic/norm.npy").is_file():
+#         norm = torch.Tensor(np.load("data/data_synthetic/norm.npy")).to(device)
 
 
 def load_config(example):

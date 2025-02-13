@@ -6,10 +6,30 @@ from typing import Union
 
 
 def shrink(a, b):
+    """
+    Applies soft-thresholding (shrinkage) to enforce sparsity.
+
+    Args:
+        a (torch.Tensor): Input tensor.
+        b (torch.Tensor): Threshold tensor.
+
+    Returns:
+        torch.Tensor: Shrunk tensor where values are reduced by `b` if they exceed `b`.
+    """
     return (torch.abs(a) - b).clamp_min(0) * torch.sgn(a)
 
 
 def shrink_(a, b):
+    """
+    Applies soft-thresholding to a tuple representing wavelet coefficients.
+
+    Args:
+        a (tuple): A tuple containing (approximation coefficients, list of detail coefficients).
+        b (torch.Tensor): Threshold tensor.
+
+    Returns:
+        tuple: Thresholded wavelet coefficients (approximation, details).
+    """
     a0 = shrink(a[0], b)
     an = []
     for ai in a[1]:
@@ -18,6 +38,15 @@ def shrink_(a, b):
 
 
 def copy_(x):
+    """
+    Creates a zero-initialized copy of a tuple representing wavelet coefficients.
+
+    Args:
+        x (tuple): A tuple containing (approximation coefficients, list of detail coefficients).
+
+    Returns:
+        tuple: A tuple of zero tensors with the same structure as `x`.
+    """
     x0 = torch.zeros_like(x[0])
     xn = []
     for xi in x[1]:
@@ -26,6 +55,16 @@ def copy_(x):
 
 
 def my_diff(x, y):
+    """
+    Computes the element-wise difference between two sets of wavelet coefficients.
+
+    Args:
+        x (tuple): First set of wavelet coefficients.
+        y (tuple): Second set of wavelet coefficients.
+
+    Returns:
+        tuple: Element-wise difference (approximation, details).
+    """
     z0 = x[0] - y[0]
     zn = []
     for i in range(len(x[1])):
@@ -34,6 +73,16 @@ def my_diff(x, y):
 
 
 def my_add(x, y):
+    """
+    Computes the element-wise sum between two sets of wavelet coefficients.
+
+    Args:
+        x (tuple): First set of wavelet coefficients.
+        y (tuple): Second set of wavelet coefficients.
+
+    Returns:
+        tuple: Element-wise sum (approximation, details).
+    """
     z0 = x[0] + y[0]
     zn = []
     for i in range(len(x[1])):
@@ -52,7 +101,28 @@ def ell1_wavelet(
     ground_truth: Union[torch.Tensor, None],
     print_flag: bool = True,
 ) -> torch.Tensor:
+    """
+    Performs ℓ₁-regularized reconstruction using wavelet transforms and Radon projections.
 
+    This iterative optimization method reconstructs an image `f` from a sinogram by
+    enforcing sparsity in the wavelet domain.
+
+    Args:
+        wavelet (DWTForward): Wavelet forward transform (discrete wavelet transform).
+        iwavelet (DWTInverse): Wavelet inverse transform.
+        A (torch_radon.Radon): Radon transform operator (forward and backward projections).
+        sinogram (torch.Tensor): Input sinogram (measured projection data).
+        p_0 (float): Weight for the Radon transform term in the optimization.
+        p_1 (float): Weight for the wavelet regularization term.
+        Niter (int): Number of iterations to run the optimization.
+        ground_truth (Union[torch.Tensor, None]): Ground truth image for error tracking
+                                                 (used only if `print_flag` is True).
+        print_flag (bool, optional): If True, prints the iteration number and reconstruction error
+                                     (if `ground_truth` is provided). Defaults to True.
+
+    Returns:
+        torch.Tensor: The reconstructed image tensor.
+    """
     bp = A.backward(sinogram)
 
     # Apply the DWT forward transform
@@ -79,7 +149,9 @@ def ell1_wavelet(
         )
 
         sh_f = wavelet(f.unsqueeze(0).unsqueeze(0))  # Apply DWT
-        z_1 = shrink_(sh_f + u_1, w * p_0 / p_1)  # Using only the approximation coefficients
+        z_1 = shrink_(
+            sh_f + u_1, w * p_0 / p_1
+        )  # Using only the approximation coefficients
         z_2 = (f + u_2).clamp_min(0)
         u_1 = my_add(u_1, my_diff(sh_f, z_1))
         u_2 = u_2 + f - z_2

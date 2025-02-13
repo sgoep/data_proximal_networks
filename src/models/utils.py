@@ -31,7 +31,7 @@ def process_reconstruction(
         initrecon=initrecon,
         example=example,
         initial_regul=initial_regul,
-        test_train=test_train
+        test_train=test_train,
     )
 
     # Get the X, Y data from the DataLoader
@@ -46,16 +46,13 @@ def process_reconstruction(
 
     # Visualize the result
     visualization_with_zoom(
-        example,
-        Y, zoom, colorbar,
-        f"results/figures/0000-{example}_{label}.pdf"
+        example, Y, zoom, colorbar, f"results/figures/0000-{example}_{label}.pdf"
     )
     print("##############################################################")
     return calc_errors(Y, X)
 
 
 def data_prox_func(X: torch.Tensor, beta: torch.Tensor) -> torch.Tensor:
-
     """
     Applies a proximity operator to the input tensor `X` based on a threshold
     `beta`.
@@ -91,18 +88,14 @@ def data_prox_func(X: torch.Tensor, beta: torch.Tensor) -> torch.Tensor:
 
 
 def extension_with_zero(X: torch.Tensor, config) -> torch.Tensor:
-    return F.pad(
-        X, (0, 0, 0, config.num_angles_full - config.num_angles_limited)
-    )
+    return F.pad(X, (0, 0, 0, config.num_angles_full - config.num_angles_limited))
 
 
 def init_weights(m):
 
     torch.manual_seed(0)
     if isinstance(m, nn.Conv2d):
-        nn.init.normal_(
-            m.weight, mean=0.0, std=np.sqrt(2/(3**2 * m.in_channels))
-        )
+        nn.init.normal_(m.weight, mean=0.0, std=np.sqrt(2 / (3**2 * m.in_channels)))
         if m.bias is not None:
             nn.init.zeros_(m.bias)
 
@@ -118,12 +111,12 @@ def save_weights_as_json(model, file_name):
         if param.requires_grad:
             weights_dict[name] = param.data.tolist()
 
-    with open(file_name, 'w') as f:
+    with open(file_name, "w") as f:
         json.dump(weights_dict, f)
 
 
 def load_weights_from_json(model, file_name):
-    with open(file_name, 'r') as f:
+    with open(file_name, "r") as f:
         weights_dict = json.load(f)
 
     for name, param in model.named_parameters():
@@ -174,22 +167,13 @@ def get_data_loader(example, initrecon, initial_regul, config):
         initial_regul=initial_regul,
     )
 
-    TrainDataGen = torch.utils.data.DataLoader(
-        model_train_set, **config.model_params
-    )
-    TestDataGen = torch.utils.data.DataLoader(
-        model_test_set, **config.model_params
-    )
+    TrainDataGen = torch.utils.data.DataLoader(model_train_set, **config.model_params)
+    TestDataGen = torch.utils.data.DataLoader(model_test_set, **config.model_params)
     return TrainDataGen, TestDataGen
 
 
 def get_model(training_params, model_name, example):
-    model = UNet(
-        n_channels=1,
-        n_classes=1,
-        model_name=model_name,
-        example=example
-    )
+    model = UNet(n_channels=1, n_classes=1, model_name=model_name, example=example)
     model.apply(init_weights)
     model.to("cuda")
 

@@ -57,7 +57,9 @@ alpha = 0.005
 tau = 1 / L
 sigma = 1 / L
 theta = 1
-f_tv = tv(x0, A, data, alpha, tau, sigma, theta, L, Niter, ground_truth=None, print_flag=False)
+f_tv = tv(
+    x0, A, data, alpha, tau, sigma, theta, L, Niter, ground_truth=None, print_flag=False
+)
 
 p_0 = 0.0005
 p_1 = 0.05

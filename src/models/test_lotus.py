@@ -10,12 +10,12 @@ from pytorch_wavelets import DWTForward, DWTInverse
 
 from src.algorithms.ell1_wavelet import ell1_wavelet
 from src.algorithms.total_variation import tv
-from src.models.training import calc_output
 from src.models.unet import UNet
-from src.models.utils import process_reconstruction
-from src.utils.load_config import load_config
-from src.utils.radon_operator import (filter_sinogram, get_radon_operator,
-                                      get_radon_operators)
+from src.utils.radon_operator import (
+    filter_sinogram,
+    get_radon_operator,
+    get_radon_operators,
+)
 from src.utils.test_utils import calc_errors, create_error_table, print_errors
 from src.visualization.latex_figure import generate_latex_figure_block
 from src.visualization.visualization import visualization_with_zoom
@@ -29,16 +29,16 @@ def test_other_function_class(which_models, model_names, zoom=False, colorbar=Fa
 
     data = f["m"].T
 
-    wavelet = DWTForward(J=5, mode='zero', wave='db3').cuda()
-    iwavelet = DWTInverse(mode='zero', wave='db3').cuda()
+    wavelet = DWTForward(J=5, mode="zero", wave="db3").cuda()
+    iwavelet = DWTInverse(mode="zero", wave="db3").cuda()
 
     angles = np.linspace(0, 360, data.shape[0], endpoint=True)
-    angles = angles*np.pi/180
+    angles = angles * np.pi / 180
     N = 256
 
-    source_distance = 2240*540/120
+    source_distance = 2240 * 540 / 120
     origin_detector_distance = 630
-    fan_sensor_spacing = 540/630
+    fan_sensor_spacing = 540 / 630
     num_detectors = data.shape[1]
 
     radon_full = torch_radon.RadonFanbeam(
@@ -50,12 +50,12 @@ def test_other_function_class(which_models, model_names, zoom=False, colorbar=Fa
         clip_to_circle=False,
     )
 
-    angles = angles[angles <= 3*np.pi/4]
+    angles = angles[angles <= 3 * np.pi / 4]
 
     X = np.zeros([N, N])
 
     data = torch.Tensor(data).cuda()
-    data = data[0:len(angles), :]
+    data = data[0 : len(angles), :]
 
     A = torch_radon.RadonFanbeam(
         N,
@@ -72,30 +72,43 @@ def test_other_function_class(which_models, model_names, zoom=False, colorbar=Fa
 
     x0 = torch.zeros([N, N]).cuda()
 
-    rec_landweber = landweber.run(
-        x0,
-        data, 1e-6, iterations=10000)
+    rec_landweber = landweber.run(x0, data, 1e-6, iterations=10000)
 
     L = 500
     Niter = 1000
     alpha = 0.005
-    tau = 1/L
-    sigma = 1/L
+    tau = 1 / L
+    sigma = 1 / L
     theta = 1
     rec_tv = tv(
-        x0, A, data, alpha, tau, sigma, theta, L, Niter,
-        ground_truth=None, print_flag=False
+        x0,
+        A,
+        data,
+        alpha,
+        tau,
+        sigma,
+        theta,
+        L,
+        Niter,
+        ground_truth=None,
+        print_flag=False,
     )
 
     Niter = 100
 
-    wavelet = DWTForward(J=5, mode='zero', wave='db3').cuda()
-    iwavelet = DWTInverse(mode='zero', wave='db3').cuda()
+    wavelet = DWTForward(J=5, mode="zero", wave="db3").cuda()
+    iwavelet = DWTInverse(mode="zero", wave="db3").cuda()
 
     rec_ell1 = ell1_wavelet(
-        wavelet, iwavelet, A,
-        data, p_0=0.00009, p_1=0.00001, Niter=500,
-        ground_truth=None, print_flag=False
+        wavelet,
+        iwavelet,
+        A,
+        data,
+        p_0=0.00009,
+        p_1=0.00001,
+        Niter=500,
+        ground_truth=None,
+        print_flag=False,
     )
 
     # visualization_with_zoom(
@@ -114,63 +127,61 @@ def test_other_function_class(which_models, model_names, zoom=False, colorbar=Fa
 
     # Process FBP# Print the errors
     print("fbp.")
-    errors["fbp"] = calc_errors(
-        rec_fbp.cpu().numpy().squeeze().astype('float64'),
-        X
-    )
-    print_errors(
-        rec_fbp.cpu().numpy().squeeze().astype('float64'),
-        X
-    )
+    errors["fbp"] = calc_errors(rec_fbp.cpu().numpy().squeeze().astype("float64"), X)
+    print_errors(rec_fbp.cpu().numpy().squeeze().astype("float64"), X)
 
     # Visualize the result
     visualization_with_zoom(
         example,
-        rec_fbp.cpu().numpy().squeeze().astype('float64'), zoom, colorbar,
-        "results/figures/lotus/0000-lotus_fbp.pdf"
+        rec_fbp.cpu().numpy().squeeze().astype("float64"),
+        zoom,
+        colorbar,
+        "results/figures/lotus/0000-lotus_fbp.pdf",
     )
     print("##############################################################")
 
     print("landweber.")
     errors["landweber"] = calc_errors(
-        rec_landweber.cpu().numpy().squeeze().astype('float64'),
-        X
+        rec_landweber.cpu().numpy().squeeze().astype("float64"), X
     )
-    print_errors(
-        rec_landweber.cpu().numpy().squeeze().astype('float64'),
-        X
-    )
+    print_errors(rec_landweber.cpu().numpy().squeeze().astype("float64"), X)
     # Visualize the result
     visualization_with_zoom(
         example,
-        rec_landweber.cpu().numpy().squeeze().astype('float64'), zoom, colorbar,
-        "results/figures/lotus/0000-lotus_landweber.pdf"
+        rec_landweber.cpu().numpy().squeeze().astype("float64"),
+        zoom,
+        colorbar,
+        "results/figures/lotus/0000-lotus_landweber.pdf",
     )
     print("##############################################################")
 
     print("tv.")
     # Process TV
-    errors["tv"] = calc_errors(rec_tv.cpu().numpy().squeeze().astype('float64'), X)
-    print_errors(rec_tv.cpu().numpy().squeeze().astype('float64'), X)
+    errors["tv"] = calc_errors(rec_tv.cpu().numpy().squeeze().astype("float64"), X)
+    print_errors(rec_tv.cpu().numpy().squeeze().astype("float64"), X)
 
     # Visualize the result
     visualization_with_zoom(
         example,
-        rec_tv.cpu().numpy().squeeze().astype('float64'), zoom, colorbar,
-        "results/figures/lotus/0000-lotus_tv.pdf"
+        rec_tv.cpu().numpy().squeeze().astype("float64"),
+        zoom,
+        colorbar,
+        "results/figures/lotus/0000-lotus_tv.pdf",
     )
     print("##############################################################")
 
     # Process ELL1
     print("ell1.")
-    errors["ell1"] = calc_errors(rec_ell1.cpu().numpy().squeeze().astype('float64'), X)
-    print_errors(rec_ell1.cpu().numpy().squeeze().astype('float64'), X)
+    errors["ell1"] = calc_errors(rec_ell1.cpu().numpy().squeeze().astype("float64"), X)
+    print_errors(rec_ell1.cpu().numpy().squeeze().astype("float64"), X)
 
     # Visualize the result
     visualization_with_zoom(
         example,
-        rec_ell1.cpu().numpy().squeeze().astype('float64'), zoom, colorbar,
-        "results/figures/lotus/0000-lotus_ell1.pdf"
+        rec_ell1.cpu().numpy().squeeze().astype("float64"),
+        zoom,
+        colorbar,
+        "results/figures/lotus/0000-lotus_ell1.pdf",
     )
     print("##############################################################")
 
@@ -206,15 +217,15 @@ def test_other_function_class(which_models, model_names, zoom=False, colorbar=Fa
         # diff_recons = abs(radon_limited.forward(model_output) - radon_limited.forward(Y))#model_output - Y
         # radon_diff_recons = diff_recons  # radon_full.forward(diff_recons)
         # diff_plots[f"results/figures/lotus/0000-lotus_diff_{model_name}.pdf"] = abs(
-            # radon_diff_recons.cpu().detach().numpy().squeeze().astype('float64'))
+        # radon_diff_recons.cpu().detach().numpy().squeeze().astype('float64'))
         # errors_data[f"{model_name}_data"] = calc_errors(
-            # radon_limited.forward(model_output).cpu().detach().numpy().squeeze().astype('float64'),
-            # radon_limited.forward(Y).cpu().numpy().squeeze().astype('float64'),
+        # radon_limited.forward(model_output).cpu().detach().numpy().squeeze().astype('float64'),
+        # radon_limited.forward(Y).cpu().numpy().squeeze().astype('float64'),
         # )
         # mse_error_diff = errors_data[f"{model_name}_data"]["MSE"]
         # figure_names_diff.append(f"0000-lotus_diff_{model_name}.pdf")
         # captions_diff.append(
-            # f"|\\forward(\\signal_{{\\rm {model_name.split('_')[0].upper()}}}^{{{model_name.split('_')[-1].upper()}}}) - \\forward(\\signal_{{\\rm {model_name.split('_')[0].upper()}}})|, \\text{{MSE}}: {round(mse_error_diff, 4)}"
+        # f"|\\forward(\\signal_{{\\rm {model_name.split('_')[0].upper()}}}^{{{model_name.split('_')[-1].upper()}}}) - \\forward(\\signal_{{\\rm {model_name.split('_')[0].upper()}}})|, \\text{{MSE}}: {round(mse_error_diff, 4)}"
         # )
         # labels_diff.append(f"0000-lotus_diff_{model_name}.pdf")
 
@@ -225,8 +236,10 @@ def test_other_function_class(which_models, model_names, zoom=False, colorbar=Fa
         print("Plotting.")
         visualization_with_zoom(
             example,
-            output, zoom, colorbar,
-            f"results/figures/lotus/0000-lotus_{model_name}.pdf"
+            output,
+            zoom,
+            colorbar,
+            f"results/figures/lotus/0000-lotus_{model_name}.pdf",
         )
         print(f"Finished {model_name}.")
 
@@ -251,10 +264,10 @@ def test_other_function_class(which_models, model_names, zoom=False, colorbar=Fa
     # print(generate_latex_figure_block(figure_names_diff, captions_diff, labels_diff))
     # latex_figure_diff = generate_latex_figure_block(figure_names_diff, captions_diff, labels_diff)
     # with open("results/lotus_latex_diff_figure.txt", 'w') as f:
-        # f.write(latex_figure_diff)
+    # f.write(latex_figure_diff)
 
     # create_error_table(
-        # errors, f"results/lotus_recon_error_table.csv", "lotus", False)
+    # errors, f"results/lotus_recon_error_table.csv", "lotus", False)
 
     print("Finished.")
 
@@ -266,13 +279,14 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Testing inputs.")
     parser.add_argument("which_models", type=str, help="Which models.")
-    parser.add_argument("model_names", type=parse_nested_list, nargs='?')
+    parser.add_argument("model_names", type=parse_nested_list, nargs="?")
 
     # Parse arguments from the command line
     args = parser.parse_args()
 
     if args.model_names is None:
         from example import models
+
         model_names = models
 
     print(f"Testing for models trained with {args.which_models}")

@@ -53,11 +53,21 @@ index = 1363
 name = "lodopab"
 which = "train"
 
-x = np.load(f"data/data_lodopab/data_processed/{which}/single_files/phantom_{index}.npy").squeeze()
-y = np.load(f"data/data_lodopab/data_processed/{which}/single_files/fbp_{index}.npy").squeeze()
-z = np.load(f"data/data_lodopab/data_processed/{which}/single_files/init_regul_tv_{index}.npy").squeeze()
-a = np.load(f"data/data_lodopab/data_processed/{which}/single_files/init_regul_ell1_{index}.npy").squeeze()
-q = np.load(f"data/data_lodopab/data_processed/{which}/single_files/landweber_{index}.npy").squeeze()
+x = np.load(
+    f"data/data_lodopab/data_processed/{which}/single_files/phantom_{index}.npy"
+).squeeze()
+y = np.load(
+    f"data/data_lodopab/data_processed/{which}/single_files/fbp_{index}.npy"
+).squeeze()
+z = np.load(
+    f"data/data_lodopab/data_processed/{which}/single_files/init_regul_tv_{index}.npy"
+).squeeze()
+a = np.load(
+    f"data/data_lodopab/data_processed/{which}/single_files/init_regul_ell1_{index}.npy"
+).squeeze()
+q = np.load(
+    f"data/data_lodopab/data_processed/{which}/single_files/landweber_{index}.npy"
+).squeeze()
 
 print(f"Plotting {name} ...")
 
@@ -88,7 +98,9 @@ plt.imshow(q, cmap="gray")
 plt.colorbar()
 plt.savefig(f"plots/{name}_landweber.png")
 
-print(f"Norm: {np.load('data/data_lodopab/data_processed/train/norm.npy', allow_pickle=True)}")
+print(
+    f"Norm: {np.load('data/data_lodopab/data_processed/train/norm.npy', allow_pickle=True)}"
+)
 
 print(f"Finished {name} ...")
 

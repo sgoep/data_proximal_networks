@@ -1,0 +1,6 @@
+data/
+models/
+plots/
+results/
+
+run_*

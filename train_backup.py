@@ -14,7 +14,6 @@ from src.data.data_loader import DataLoader
 from src.models.unet import UNet
 from src.models.utils import (
     compute_learned_output,
-    data_prox_func,
     init_weights,
     load_weights_from_json,
     save_weights_as_json,
@@ -26,14 +25,11 @@ config = load_config()
 
 
 def train(
-    model_ran,
-    model_ker,
+    model,
     TrainDataGenerator,
     TestDataGenerator,
-    error_ran,
-    optimizer_ran,
-    error_ker,
-    optimizer_ker,
+    error,
+    optimizer,
     device,
     NumEpochs,
     len_train,
@@ -44,10 +40,8 @@ def train(
 
     # scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=2, gamma=0.1)
 
-    best_test_loss_ran = float("inf")
-    best_test_loss_ker = float("inf")
-    best_model_params_ran = None
-    best_model_params_ker = None
+    best_test_loss = float("inf")
+    best_model_params = None
 
     torch.cuda.empty_cache()
     # gc.collect()
@@ -67,110 +61,81 @@ def train(
         # ).to(config.device)
 
     for epoch in np.arange(1, NumEpochs + 1):
-        train_loss_ran = 0.0
-        train_loss_ker = 0.0
-        test_loss_ran = 0.0
-        test_loss_ker = 0.0
+        train_loss = 0.0
+        test_loss = 0.0
 
-        model_ran.train()
-        model_ker.train()
-
+        model.train()
         for X, Y, Z in TrainDataGenerator:
-            optimizer_ran.zero_grad()
-            optimizer_ker.zero_grad()
+            optimizer.zero_grad()
 
             X = X.to(device=config.device, dtype=torch.float)
             Y = Y.to(device=config.device, dtype=torch.float)
             Z = Z.to(device=config.device, dtype=torch.float)
 
-            output_ran = model_ran(Y)
-            output_ker = model_ker(Y)
+            output = model(Y)
 
-            # Range
-            radon_output_ran = radon_limited.forward(output_ran)
-            res_ran = data_prox_func(radon_output_ran[:, :, 0:121, :], beta)
-            learned_output_ran = Z + res_ran
-            X_output_ran = radon_limited.forward(X)
+            learned_output, X_output = compute_learned_output(
+                model_name=model_name,
+                output=output,
+                radon_full=radon_full,
+                X=X,
+                Y=Y,
+                Z=Z,
+                beta=beta if model_name in ["fbp_dp", "tv_dp"] else None,
+            )
 
-            # Null Space
-            radon_output_ker = radon_full.forward(output_ker)
-            res_ker = radon_output_ker[:, :, 121:, :]
-            learned_output_ker = res_ker
-            X_output_ker = radon_full.forward(X)[:, :, 121:, :]
+            loss = error(learned_output.double(), X_output.double())
 
-            loss_ran = error_ran(learned_output_ran.double(), X_output_ran.double())
-            loss_ker = error_ran(learned_output_ker.double(), X_output_ker.double())
+            loss.backward()
+            optimizer.step()
 
-            loss_ran.backward()
-            optimizer_ran.step()
+            train_loss += loss.data.item()
+            history["loss"].append(train_loss)
 
-            loss_ker.backward()
-            optimizer_ker.step()
-
-            train_loss_ran += loss_ran.data.item()
-            train_loss_ker += loss_ker.data.item()
-            # history["loss"].append(train_loss_ran)
-
-        model_ran.eval()
-        model_ker.eval()
+        model.eval()
         for X, Y, Z in TestDataGenerator:
 
             X = X.to(device=device, dtype=torch.float)
             Y = Y.to(device=device, dtype=torch.float)
             Z = Z.to(device=device, dtype=torch.float)
 
-            output_ran = model_ran(Y)
-            output_ker = model_ker(Y)
+            output = model(Y)
 
-            if model_name in ["fbp_dp", "tv_dp"]:
-                # Range
-                radon_output_ran = radon_limited.forward(output_ran)
-                res_ran = data_prox_func(radon_output_ran[:, :, 0:121, :], beta)
-                learned_output_ran = Z + res_ran
-                X_output_ran = radon_limited.forward(X)
+            learned_output, X_output = compute_learned_output(
+                model_name=model_name,
+                output=output,
+                radon_full=radon_full,
+                X=X,
+                Y=Y,
+                Z=Z,
+                beta=beta if model_name in ["fbp_dp", "tv_dp"] else None,
+            )
 
-                # Null Space
-                radon_output_ker = radon_full.forward(output_ker)
-                res_ker = radon_output_ker[:, :, 121:, :]
-                learned_output_ker = res_ker
-                X_output_ker = radon_full.forward(X)[:, :, 121:, :]
+            loss = error(learned_output.double(), X_output.double())
 
-                loss_ran = error_ran(learned_output_ran.double(), X_output_ran.double())
-                loss_ker = error_ran(learned_output_ker.double(), X_output_ker.double())
+            test_loss += loss.data.item()
+            history["test_loss"].append(test_loss)
 
-            test_loss_ran += loss_ran.data.item()
-            test_loss_ker += loss_ker.data.item()
-            # history["test_loss"].append(test_loss_ran)
-        #
-        train_loss_ran = train_loss_ran / len_train
-        test_loss_ran = test_loss_ran / len_test
-
-        train_loss_ker = train_loss_ker / len_train
-        test_loss_ker = test_loss_ker / len_test
+        train_loss = train_loss / len_train
+        test_loss = test_loss / len_test
 
         # Step the scheduler
         # scheduler.step()
-        # lr = optimizer.param_groups[0]['lr']
+        lr = optimizer.param_groups[0]["lr"]
 
-        if test_loss_ran < best_test_loss_ran:
+        if test_loss < best_test_loss:
             best_epoch = epoch
-            best_test_loss_ran = test_loss_ran
-            best_model_params = model_ran.state_dict().copy()
-            torch.save(best_model_params, f"models/{example}/{model_name}_ran.pth")
-
-        if test_loss_ker < best_test_loss_ker:
-            best_epoch = epoch
-            best_test_loss_ker = test_loss_ker
-            best_model_params = model_ker.state_dict().copy()
-            torch.save(best_model_params, f"models/{example}/{model_name}_ker.pth")
+            best_test_loss = test_loss
+            best_model_params = model.state_dict().copy()
+            torch.save(best_model_params, f"models/{example}/{model_name}.pth")
 
         print(
-            f"Epoch {epoch}/{NumEpochs}, Train Loss: {train_loss_ran:.8f} and "
-            f"Test Loss: {test_loss_ran:.8f}"
+            f"Epoch {epoch}/{NumEpochs}, Train Loss: {train_loss:.8f} and "
+            f"Test Loss: {test_loss:.8f}, learning rate: {lr}"
         )
 
-        train_loss_list[epoch - 1] = train_loss_ran
-        test_loss_list[epoch - 1] = test_loss_ran
+        train_loss_list[epoch - 1] = train_loss
+        test_loss_list[epoch - 1] = test_loss
 
     print("######################## Saving model ######################## ")
     print(f"###### {model_name}, epoch: {best_epoch} ######")
@@ -204,9 +169,7 @@ def start_training(
         model_error = nn.MSELoss()
         return model, model_optimizer, model_error
 
-    model_ran, optimizer_ran, error_ran = get_model(training_params)
-
-    model_ker, optimizer_ker, error_ker = get_model(training_params)
+    model, optimizer, error = get_model(training_params)
 
     # model_ran.apply(init_weights)
 
@@ -253,14 +216,11 @@ def start_training(
     print("############################################################## ")
 
     _, train_loss_list, test_loss_list = train(
-        model_ran,
-        model_ker,
+        model,
         TrainDataGen,
         TestDataGen,
-        error_ran,
-        optimizer_ran,
-        error_ker,
-        optimizer_ker,
+        error,
+        optimizer,
         config.device,
         training_params["epochs"],
         training_params["len_train"],
@@ -285,13 +245,19 @@ def training(example: str):
     print("Start training.")
 
     model_params = {"batch_size": 16, "shuffle": True, "num_workers": 2}
+    training_params = {
+        "learning_rate": config.learning_rate,
+        "len_train": config.len_train,
+        "len_test": config.len_test,
+        "epochs": config.epochs,
+    }
 
     # List of model configurations
     model_configs = [
         # {"initrecon": False, "model_name": "fbp_X_res"},
         # {"initrecon": False, "model_name": "fbp_res"},
-        # {"initrecon": False, "model_name": "fbp_nsn"},
-        {"initrecon": False, "model_name": "fbp_dp"},
+        {"initrecon": False, "model_name": "fbp_nsn"},
+        # {"initrecon": False, "model_name": "fbp_dp"},
         # {"initrecon": True, "model_name": "tv_X_res"},
         # {"initrecon": True, "model_name": "tv_res"},
         # {"initrecon": True, "model_name": "tv_nsn"},
@@ -304,7 +270,7 @@ def training(example: str):
             initrecon=config_dict["initrecon"],
             model_name=config_dict["model_name"],
             model_params=model_params,
-            training_params=config.training_params,
+            training_params=training_params,
             config=config,
         )
 

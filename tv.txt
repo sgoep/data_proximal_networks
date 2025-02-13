@@ -1,0 +1,20 @@
+Start.
+0
+Traceback (most recent call last):
+  File "/home/simon/miniconda3/envs/data_prox/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/home/simon/miniconda3/envs/data_prox/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "/home/simon/projects/clean_lodopab_data_prox/src/algorithms/ell1_wavelet.py", line 193, in <module>
+    rec = fista(
+  File "/home/simon/projects/clean_lodopab_data_prox/src/algorithms/ell1_wavelet.py", line 132, in fista
+    q = A(Q(y)) - data
+  File "/home/simon/projects/clean_lodopab_data_prox/src/algorithms/ell1_wavelet.py", line 179, in <lambda>
+    Q = lambda x: pywt.waverec2(x, wavelet, mode='symmetric')
+  File "/home/simon/miniconda3/envs/data_prox/lib/python3.8/site-packages/pywt/_multilevel.py", line 335, in waverec2
+    a = idwt2((a[idxs], d), wavelet, mode, axes)
+  File "/home/simon/miniconda3/envs/data_prox/lib/python3.8/site-packages/pywt/_multidim.py", line 118, in idwt2
+    return idwtn(coeffs, wavelet, mode, axes)
+  File "/home/simon/miniconda3/envs/data_prox/lib/python3.8/site-packages/pywt/_multidim.py", line 280, in idwtn
+    raise ValueError("`coeffs` must all be of equal size (or None)")
+ValueError: `coeffs` must all be of equal size (or None)

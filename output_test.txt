@@ -1,0 +1,243 @@
+Testing for example synthetic
+Models: ['landweber_X_res', 'tv_X_res', 'ell1_X_res', 'landweber_nsn', 'tv_nsn', 'ell1_nsn', 'landweber_single_dp', 'tv_single_dp', 'ell1_single_dp']
+##############################################################
+Model: landweber.
+MSE: 0.012353987259518787
+PSNR: 22.248772600240873
+SSIM: 0.25454248808440233
+Finished landweber.
+##############################################################
+Model: tv.
+MSE: 0.0007993863158755203
+PSNR: 29.296692465188784
+SSIM: 0.8418399992770781
+Finished tv.
+##############################################################
+Model: ell1.
+MSE: 0.0011446282754786412
+PSNR: 28.252676888854943
+SSIM: 0.7853126311686986
+Finished ell1.
+##############################################################
+Model: landweber_X_res.
+MSE: 0.0005987709280186313
+PSNR: 32.59698059141941
+SSIM: 0.8640262046299819
+Finished landweber_X_res.
+##############################################################
+Model: tv_X_res.
+MSE: 0.0004024558947837688
+PSNR: 33.25099582252528
+SSIM: 0.9447832245693047
+Finished tv_X_res.
+##############################################################
+Model: ell1_X_res.
+MSE: 0.00039635546054972513
+PSNR: 33.253771599488175
+SSIM: 0.9456441945560803
+Finished ell1_X_res.
+##############################################################
+Model: landweber_nsn.
+MSE: 0.010237475334473719
+PSNR: 23.20755310433722
+SSIM: 0.3014823034229505
+Finished landweber_nsn.
+##############################################################
+Model: tv_nsn.
+MSE: 0.0006025451911903447
+PSNR: 31.336871603516766
+SSIM: 0.869684108422588
+Finished tv_nsn.
+##############################################################
+Model: ell1_nsn.
+MSE: 0.0007260221200004299
+PSNR: 30.826391983985502
+SSIM: 0.8119590272318529
+Finished ell1_nsn.
+##############################################################
+Model: landweber_single_dp.
+MSE: 0.0037859205103390244
+PSNR: 26.651612550759882
+SSIM: 0.46270964658440955
+Finished landweber_single_dp.
+##############################################################
+Model: tv_single_dp.
+MSE: 0.0004326267356393377
+PSNR: 33.16750019372632
+SSIM: 0.9373470434247727
+Finished tv_single_dp.
+##############################################################
+Model: ell1_single_dp.
+MSE: 0.00042203832515401636
+PSNR: 33.19007774527125
+SSIM: 0.9316488722701189
+Finished ell1_single_dp.
+##############################################################
+/home/simon/projects/clean_lodopab_data_prox/src/models/testing.py:178: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
+  plt.figure()
+\begin{tabular}{lrrr}
+\toprule
+methods & MSE & PSNR & SSIM \\
+\midrule
+$\signal_{\rm LANDWEBER}$ & 0.0124 & 22.2488 & 0.2545 \\
+$\signal_{\rm TV}$ & 0.0008 & 29.2967 & 0.8418 \\
+$\signal_{\ell_1}$ & 0.0011 & 28.2527 & 0.7853 \\
+$\signal_{\rm LANDWEBER}^{\rm RES}$ & 0.0006 & 32.5970 & 0.8640 \\
+$\signal_{\rm TV}^{\rm RES}$ & 0.0004 & 33.2510 & 0.9448 \\
+$\signal_{\ell_1}^{\rm RES}$ & 0.0004 & 33.2538 & 0.9456 \\
+$\signal_{\rm LANDWEBER}^{\rm NSN}$ & 0.0102 & 23.2076 & 0.3015 \\
+$\signal_{\rm TV}^{\rm NSN}$ & 0.0006 & 31.3369 & 0.8697 \\
+$\signal_{\ell_1}^{\rm NSN}$ & 0.0007 & 30.8264 & 0.8120 \\
+$\signal_{\rm LANDWEBER}^{\rm DP}$ & 0.0038 & 26.6516 & 0.4627 \\
+$\signal_{\rm TV}^{\rm DP}$ & 0.0004 & 33.1675 & 0.9373 \\
+$\signal_{\ell_1}^{\rm DP}$ & 0.0004 & 33.1901 & 0.9316 \\
+\bottomrule
+\end{tabular}
+
+\begin{tabular}{lrrr}
+\toprule
+methods & MSE & PSNR & SSIM \\
+\midrule
+$\forward(\signal_{\rm LANDWEBER}) - \forward(\signal^\star)$ & 0.3887 & 35.8266 & 0.8688 \\
+$\forward(\signal_{\rm TV}) - \forward(\signal^\star)$ & 0.0683 & 42.4427 & 0.9781 \\
+$\forward(\signal_{\ell_1}) - \forward(\signal^\star)$ & 0.0585 & 43.2716 & 0.9674 \\
+$\forward(\signal_{\rm LANDWEBER}^{\rm RES}) - \forward(\signal^\star)$ & 0.3943 & 35.0650 & 0.8483 \\
+$\forward(\signal_{\rm TV}^{\rm RES}) - \forward(\signal^\star)$ & 0.0395 & 44.9207 & 0.9770 \\
+$\forward(\signal_{\ell_1}^{\rm RES}) - \forward(\signal^\star)$ & 0.0515 & 43.9414 & 0.9687 \\
+$\forward(\signal_{\rm LANDWEBER}^{\rm NSN}) - \forward(\signal^\star)$ & 0.0225 & 48.1903 & 0.9899 \\
+$\forward(\signal_{\rm TV}^{\rm NSN}) - \forward(\signal^\star)$ & 0.0049 & 53.9279 & 0.9939 \\
+$\forward(\signal_{\ell_1}^{\rm NSN}) - \forward(\signal^\star)$ & 0.0059 & 53.2541 & 0.9896 \\
+$\forward(\signal_{\rm LANDWEBER}^{\rm DP}) - \forward(\signal^\star)$ & 0.2860 & 36.5364 & 0.9054 \\
+$\forward(\signal_{\rm TV}^{\rm DP}) - \forward(\signal^\star)$ & 0.0360 & 45.2942 & 0.9831 \\
+$\forward(\signal_{\ell_1}^{\rm DP}) - \forward(\signal^\star)$ & 0.0577 & 43.3654 & 0.9694 \\
+\bottomrule
+\end{tabular}
+
+['0000-synthetic_landweber.pdf', '0000-synthetic_tv.pdf', '0000-synthetic_ell1.pdf', '0000-synthetic_landweber_X_res.pdf', '0000-synthetic_tv_X_res.pdf', '0000-synthetic_ell1_X_res.pdf', '0000-synthetic_landweber_nsn.pdf', '0000-synthetic_tv_nsn.pdf', '0000-synthetic_ell1_nsn.pdf', '0000-synthetic_landweber_single_dp.pdf', '0000-synthetic_tv_single_dp.pdf', '0000-synthetic_ell1_single_dp.pdf']
+['0000-synthetic_landweber.pdf', '0000-synthetic_tv.pdf', '0000-synthetic_ell1.pdf', '0000-synthetic_landweber_X_res.pdf', '0000-synthetic_tv_X_res.pdf', '0000-synthetic_ell1_X_res.pdf', '0000-synthetic_landweber_nsn.pdf', '0000-synthetic_tv_nsn.pdf', '0000-synthetic_ell1_nsn.pdf', '0000-synthetic_landweber_single_dp.pdf', '0000-synthetic_tv_single_dp.pdf', '0000-synthetic_ell1_single_dp.pdf']
+\begin{figure}[b]
+\centering
+\setlength{\figwidth}{0.24\textwidth}
+  \begin{subfigure}{\figwidth}
+    \includegraphics[width=\textwidth]{images/0000-synthetic_landweber.pdf}
+    \caption{$\signal_{\rm LANDWEBER}$}
+    \label{0000-synthetic_landweber.pdf}
+  \end{subfigure}
+  \begin{subfigure}{\figwidth}
+    \includegraphics[width=\textwidth]{images/0000-synthetic_tv.pdf}
+    \caption{$\signal_{\rm TV}$}
+    \label{0000-synthetic_tv.pdf}
+  \end{subfigure}
+  \begin{subfigure}{\figwidth}
+    \includegraphics[width=\textwidth]{images/0000-synthetic_ell1.pdf}
+    \caption{$\signal_{\rm ELL1}$}
+    \label{0000-synthetic_ell1.pdf}
+  \end{subfigure}
+  \begin{subfigure}{\figwidth}
+    \includegraphics[width=\textwidth]{images/0000-synthetic_landweber_X_res.pdf}
+    \caption{$\signal_{\rm landweber}^{\rm RES}$}
+    \label{0000-synthetic_landweber_X_res.pdf}
+  \end{subfigure}
+\\ 
+  \begin{subfigure}{\figwidth}
+    \includegraphics[width=\textwidth]{images/0000-synthetic_tv_X_res.pdf}
+    \caption{$\signal_{\rm tv}^{\rm RES}$}
+    \label{0000-synthetic_tv_X_res.pdf}
+  \end{subfigure}
+  \begin{subfigure}{\figwidth}
+    \includegraphics[width=\textwidth]{images/0000-synthetic_ell1_X_res.pdf}
+    \caption{$\signal_{\rm ell1}^{\rm RES}$}
+    \label{0000-synthetic_ell1_X_res.pdf}
+  \end{subfigure}
+  \begin{subfigure}{\figwidth}
+    \includegraphics[width=\textwidth]{images/0000-synthetic_landweber_nsn.pdf}
+    \caption{$\signal_{\rm landweber}^{\rm NSN}$}
+    \label{0000-synthetic_landweber_nsn.pdf}
+  \end{subfigure}
+  \begin{subfigure}{\figwidth}
+    \includegraphics[width=\textwidth]{images/0000-synthetic_tv_nsn.pdf}
+    \caption{$\signal_{\rm tv}^{\rm NSN}$}
+    \label{0000-synthetic_tv_nsn.pdf}
+  \end{subfigure}
+\\ 
+  \begin{subfigure}{\figwidth}
+    \includegraphics[width=\textwidth]{images/0000-synthetic_ell1_nsn.pdf}
+    \caption{$\signal_{\rm ell1}^{\rm NSN}$}
+    \label{0000-synthetic_ell1_nsn.pdf}
+  \end{subfigure}
+  \begin{subfigure}{\figwidth}
+    \includegraphics[width=\textwidth]{images/0000-synthetic_landweber_single_dp.pdf}
+    \caption{$\signal_{\rm landweber}^{\rm DP}$}
+    \label{0000-synthetic_landweber_single_dp.pdf}
+  \end{subfigure}
+  \begin{subfigure}{\figwidth}
+    \includegraphics[width=\textwidth]{images/0000-synthetic_tv_single_dp.pdf}
+    \caption{$\signal_{\rm tv}^{\rm DP}$}
+    \label{0000-synthetic_tv_single_dp.pdf}
+  \end{subfigure}
+  \begin{subfigure}{\figwidth}
+    \includegraphics[width=\textwidth]{images/0000-synthetic_ell1_single_dp.pdf}
+    \caption{$\signal_{\rm ell1}^{\rm DP}$}
+    \label{0000-synthetic_ell1_single_dp.pdf}
+  \end{subfigure}
+\end{figure}
+
+['0000-synthetic_landweber.pdf', '0000-synthetic_tv.pdf', '0000-synthetic_ell1.pdf', '0000-synthetic_landweber_X_res.pdf', '0000-synthetic_tv_X_res.pdf', '0000-synthetic_ell1_X_res.pdf', '0000-synthetic_landweber_nsn.pdf', '0000-synthetic_tv_nsn.pdf', '0000-synthetic_ell1_nsn.pdf', '0000-synthetic_landweber_single_dp.pdf', '0000-synthetic_tv_single_dp.pdf', '0000-synthetic_ell1_single_dp.pdf']
+['0000-synthetic_landweber.pdf', '0000-synthetic_tv.pdf', '0000-synthetic_ell1.pdf', '0000-synthetic_landweber_X_res.pdf', '0000-synthetic_tv_X_res.pdf', '0000-synthetic_ell1_X_res.pdf', '0000-synthetic_landweber_nsn.pdf', '0000-synthetic_tv_nsn.pdf', '0000-synthetic_ell1_nsn.pdf', '0000-synthetic_landweber_single_dp.pdf', '0000-synthetic_tv_single_dp.pdf', '0000-synthetic_ell1_single_dp.pdf']
+['0000-synthetic_diff_landweber_X_res.pdf', '0000-synthetic_diff_tv_X_res.pdf', '0000-synthetic_diff_ell1_X_res.pdf', '0000-synthetic_diff_landweber_nsn.pdf', '0000-synthetic_diff_tv_nsn.pdf', '0000-synthetic_diff_ell1_nsn.pdf', '0000-synthetic_diff_landweber_single_dp.pdf', '0000-synthetic_diff_tv_single_dp.pdf', '0000-synthetic_diff_ell1_single_dp.pdf']
+['0000-synthetic_diff_landweber_X_res.pdf', '0000-synthetic_diff_tv_X_res.pdf', '0000-synthetic_diff_ell1_X_res.pdf', '0000-synthetic_diff_landweber_nsn.pdf', '0000-synthetic_diff_tv_nsn.pdf', '0000-synthetic_diff_ell1_nsn.pdf', '0000-synthetic_diff_landweber_single_dp.pdf', '0000-synthetic_diff_tv_single_dp.pdf', '0000-synthetic_diff_ell1_single_dp.pdf']
+\begin{figure}[b]
+\centering
+\setlength{\figwidth}{0.24\textwidth}
+  \begin{subfigure}{\figwidth}
+    \includegraphics[width=\textwidth]{images/0000-synthetic_diff_landweber_X_res.pdf}
+    \caption{|\forward(\signal_{\rm LANDWEBER}^{RES}) - \forward(\signal_{\rm LANDWEBER})|, \text{MSE}: 0.3943}
+    \label{0000-synthetic_diff_landweber_X_res.pdf}
+  \end{subfigure}
+  \begin{subfigure}{\figwidth}
+    \includegraphics[width=\textwidth]{images/0000-synthetic_diff_tv_X_res.pdf}
+    \caption{|\forward(\signal_{\rm TV}^{RES}) - \forward(\signal_{\rm TV})|, \text{MSE}: 0.0395}
+    \label{0000-synthetic_diff_tv_X_res.pdf}
+  \end{subfigure}
+  \begin{subfigure}{\figwidth}
+    \includegraphics[width=\textwidth]{images/0000-synthetic_diff_ell1_X_res.pdf}
+    \caption{|\forward(\signal_{\rm ELL1}^{RES}) - \forward(\signal_{\rm ELL1})|, \text{MSE}: 0.0515}
+    \label{0000-synthetic_diff_ell1_X_res.pdf}
+  \end{subfigure}
+  \begin{subfigure}{\figwidth}
+    \includegraphics[width=\textwidth]{images/0000-synthetic_diff_landweber_nsn.pdf}
+    \caption{|\forward(\signal_{\rm LANDWEBER}^{NSN}) - \forward(\signal_{\rm LANDWEBER})|, \text{MSE}: 0.0225}
+    \label{0000-synthetic_diff_landweber_nsn.pdf}
+  \end{subfigure}
+\\ 
+  \begin{subfigure}{\figwidth}
+    \includegraphics[width=\textwidth]{images/0000-synthetic_diff_tv_nsn.pdf}
+    \caption{|\forward(\signal_{\rm TV}^{NSN}) - \forward(\signal_{\rm TV})|, \text{MSE}: 0.0049}
+    \label{0000-synthetic_diff_tv_nsn.pdf}
+  \end{subfigure}
+  \begin{subfigure}{\figwidth}
+    \includegraphics[width=\textwidth]{images/0000-synthetic_diff_ell1_nsn.pdf}
+    \caption{|\forward(\signal_{\rm ELL1}^{NSN}) - \forward(\signal_{\rm ELL1})|, \text{MSE}: 0.0059}
+    \label{0000-synthetic_diff_ell1_nsn.pdf}
+  \end{subfigure}
+  \begin{subfigure}{\figwidth}
+    \includegraphics[width=\textwidth]{images/0000-synthetic_diff_landweber_single_dp.pdf}
+    \caption{|\forward(\signal_{\rm LANDWEBER}^{DP}) - \forward(\signal_{\rm LANDWEBER})|, \text{MSE}: 0.286}
+    \label{0000-synthetic_diff_landweber_single_dp.pdf}
+  \end{subfigure}
+  \begin{subfigure}{\figwidth}
+    \includegraphics[width=\textwidth]{images/0000-synthetic_diff_tv_single_dp.pdf}
+    \caption{|\forward(\signal_{\rm TV}^{DP}) - \forward(\signal_{\rm TV})|, \text{MSE}: 0.036}
+    \label{0000-synthetic_diff_tv_single_dp.pdf}
+  \end{subfigure}
+\\ 
+  \begin{subfigure}{\figwidth}
+    \includegraphics[width=\textwidth]{images/0000-synthetic_diff_ell1_single_dp.pdf}
+    \caption{|\forward(\signal_{\rm ELL1}^{DP}) - \forward(\signal_{\rm ELL1})|, \text{MSE}: 0.0577}
+    \label{0000-synthetic_diff_ell1_single_dp.pdf}
+  \end{subfigure}
+\end{figure}
+
+['0000-synthetic_diff_landweber_X_res.pdf', '0000-synthetic_diff_tv_X_res.pdf', '0000-synthetic_diff_ell1_X_res.pdf', '0000-synthetic_diff_landweber_nsn.pdf', '0000-synthetic_diff_tv_nsn.pdf', '0000-synthetic_diff_ell1_nsn.pdf', '0000-synthetic_diff_landweber_single_dp.pdf', '0000-synthetic_diff_tv_single_dp.pdf', '0000-synthetic_diff_ell1_single_dp.pdf']
+['0000-synthetic_diff_landweber_X_res.pdf', '0000-synthetic_diff_tv_X_res.pdf', '0000-synthetic_diff_ell1_X_res.pdf', '0000-synthetic_diff_landweber_nsn.pdf', '0000-synthetic_diff_tv_nsn.pdf', '0000-synthetic_diff_ell1_nsn.pdf', '0000-synthetic_diff_landweber_single_dp.pdf', '0000-synthetic_diff_tv_single_dp.pdf', '0000-synthetic_diff_ell1_single_dp.pdf']
+Testing completed for synthetic.

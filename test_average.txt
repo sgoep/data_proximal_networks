@@ -1,0 +1,162 @@
+Testing for example synthetic
+Models: ['landweber_X_res', 'tv_X_res', 'ell1_X_res', 'landweber_nsn', 'tv_nsn', 'ell1_nsn', 'landweber_single_dp', 'tv_single_dp', 'ell1_single_dp']
+##############################################################
+Initial recon: landweber
+landweber Standard deviaton mse: 0.0033
+landweber Standard deviaton psnr: 0.6808
+landweber Standard deviaton ssim: 0.0193
+0.011899060528704805
+22.635584882911225
+0.2509613454287857
+1.0282814646569505
+0.2723405672555131
+0.4889335960641537
+Initial recon: tv
+tv Standard deviaton mse: 0.0004
+tv Standard deviaton psnr: 1.6575
+tv Standard deviaton ssim: 0.0373
+0.0009507680434559538
+29.602775599758935
+0.8422694229991186
+0.7277588836780196
+0.03853346346400757
+0.1259255512398734
+Initial recon: ell1
+ell1 Standard deviaton mse: 0.0006
+ell1 Standard deviaton psnr: 1.6482
+ell1 Standard deviaton ssim: 0.0422
+0.0013363240088898325
+28.205446489665437
+0.7901479201117909
+0.6933973640240493
+0.03772599353453753
+0.2453424237413416
+Model: landweber_X_res.
+landweber_X_res Standard deviaton mse: 0.0002
+landweber_X_res Standard deviaton psnr: 1.3
+landweber_X_res Standard deviaton ssim: 0.0221
+0.0006313413928364722
+32.529240329956274
+0.873095682615344
+0.7932555527594229
+0.03710404562799211
+0.03960936869675923
+Model: tv_X_res.
+tv_X_res Standard deviaton mse: 0.0001
+tv_X_res Standard deviaton psnr: 1.2863
+tv_X_res Standard deviaton ssim: 0.0072
+0.0003789756752754624
+34.201414946456964
+0.959959911500652
+0.7565555351791999
+0.02230296115030947
+0.019214207168961012
+Model: ell1_X_res.
+ell1_X_res Standard deviaton mse: 0.0001
+ell1_X_res Standard deviaton psnr: 1.2938
+ell1_X_res Standard deviaton ssim: 0.007
+0.00036714224967784854
+34.361601959376706
+0.960986036285032
+0.7547283743265217
+0.021988777690573672
+0.017882470974330832
+Model: landweber_nsn.
+landweber_nsn Standard deviaton mse: 0.0027
+landweber_nsn Standard deviaton psnr: 0.7162
+landweber_nsn Standard deviaton ssim: 0.0212
+0.009534433619167783
+23.655539923521715
+0.3092466552835105
+1.0109509299150679
+0.2548517350128369
+0.027722250319889414
+Model: tv_nsn.
+tv_nsn Standard deviaton mse: 0.0002
+tv_nsn Standard deviaton psnr: 1.1392
+tv_nsn Standard deviaton ssim: 0.0223
+0.0005237164368078216
+32.92121233800245
+0.8990620086990786
+0.7256962780275455
+0.034960441412956914
+0.014809965187557735
+Model: ell1_nsn.
+ell1_nsn Standard deviaton mse: 0.0002
+ell1_nsn Standard deviaton psnr: 1.3624
+ell1_nsn Standard deviaton ssim: 0.0316
+0.0006375212519477355
+32.481146311130544
+0.8621410665932706
+0.6937409380641054
+0.036230928362966985
+0.014200444432383368
+Model: landweber_single_dp.
+landweber_single_dp Standard deviaton mse: 0.0013
+landweber_single_dp Standard deviaton psnr: 1.0096
+landweber_single_dp Standard deviaton ssim: 0.0402
+0.0036651433343966922
+26.61654471231988
+0.46217097157557147
+0.8256396221698483
+0.0694479312974112
+0.057715154636402186
+Model: tv_single_dp.
+tv_single_dp Standard deviaton mse: 0.0001
+tv_single_dp Standard deviaton psnr: 1.2012
+tv_single_dp Standard deviaton ssim: 0.0092
+0.0004075591361210072
+33.96705969981453
+0.9503707520252972
+0.7542561893402232
+0.020367719637265046
+0.015962702831638254
+Model: ell1_single_dp.
+ell1_single_dp Standard deviaton mse: 0.0001
+ell1_single_dp Standard deviaton psnr: 1.2523
+ell1_single_dp Standard deviaton ssim: 0.0123
+0.0003904114307435826
+34.19290017571897
+0.9489865292122527
+0.752012354659916
+0.01965251559631921
+0.015413251328139213
+\begin{tabular}{lrrr}
+\toprule
+ & MSE & PSNR & SSIM \\
+\midrule
+$\signal_{\rm LANDWEBER}$ & 0.0119 & 22.6356 & 0.2510 \\
+$\signal_{\rm TV}$ & 0.0010 & 29.6028 & 0.8423 \\
+$\signal_{\ell_1}$ & 0.0013 & 28.2054 & 0.7901 \\
+$\signal_{\rm LANDWEBER}^{\rm RES}$ & 0.0006 & 32.5292 & 0.8731 \\
+$\signal_{\rm TV}^{\rm RES}$ & 0.0004 & 34.2014 & 0.9600 \\
+$\signal_{\ell_1}^{\rm RES}$ & 0.0004 & 34.3616 & 0.9610 \\
+$\signal_{\rm LANDWEBER}^{\rm NSN}$ & 0.0095 & 23.6555 & 0.3092 \\
+$\signal_{\rm TV}^{\rm NSN}$ & 0.0005 & 32.9212 & 0.8991 \\
+$\signal_{\ell_1}^{\rm NSN}$ & 0.0006 & 32.4811 & 0.8621 \\
+$\signal_{\rm LANDWEBER}^{\rm DP}$ & 0.0037 & 26.6165 & 0.4622 \\
+$\signal_{\rm TV}^{\rm DP}$ & 0.0004 & 33.9671 & 0.9504 \\
+$\signal_{\ell_1}^{\rm DP}$ & 0.0004 & 34.1929 & 0.9490 \\
+\bottomrule
+\end{tabular}
+
+\begin{tabular}{lrrr}
+\toprule
+ & $\radon_\Omega (\signal_{{\rm REC}}) - \data^\delta$ & $\radon_\Omega (\signal_{{\rm REC}}) - \radon_\Omega (\signal^\star)$ & $\radon_{{\Omega^c}} (\signal_{{\rm REC}}) - \radon_{{\Omega^c}} (\signal^\star)$ \\
+\midrule
+$\signal_{\rm LANDWEBER}$ & 1.0283 & 0.2723 & 0.4889 \\
+$\signal_{\rm TV}$ & 0.7278 & 0.0385 & 0.1259 \\
+$\signal_{\ell_1}$ & 0.6934 & 0.0377 & 0.2453 \\
+$\signal_{\rm LANDWEBER}^{\rm RES}$ & 0.7933 & 0.0371 & 0.0396 \\
+$\signal_{\rm TV}^{\rm RES}$ & 0.7566 & 0.0223 & 0.0192 \\
+$\signal_{\ell_1}^{\rm RES}$ & 0.7547 & 0.0220 & 0.0179 \\
+$\signal_{\rm LANDWEBER}^{\rm NSN}$ & 1.0110 & 0.2549 & 0.0277 \\
+$\signal_{\rm TV}^{\rm NSN}$ & 0.7257 & 0.0350 & 0.0148 \\
+$\signal_{\ell_1}^{\rm NSN}$ & 0.6937 & 0.0362 & 0.0142 \\
+$\signal_{\rm LANDWEBER}^{\rm DP}$ & 0.8256 & 0.0694 & 0.0577 \\
+$\signal_{\rm TV}^{\rm DP}$ & 0.7543 & 0.0204 & 0.0160 \\
+$\signal_{\ell_1}^{\rm DP}$ & 0.7520 & 0.0197 & 0.0154 \\
+\bottomrule
+\end{tabular}
+
+Testing completed for synthetic.

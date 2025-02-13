@@ -39,9 +39,7 @@ class config_lodopab:
     # num_angles_null_space = len(angles_null_space)
     factor = None
     if Path("data/data_lodopab/data_processed/train/norm.npy").is_file():
-        norm = torch.Tensor(
-            np.load("data/data_lodopab/data_processed/train/norm.npy")
-        ).to(device)
+        norm = torch.Tensor(np.load("data/data_lodopab/data_processed/train/norm.npy")).to(device)
     # norm = "x"
 
 

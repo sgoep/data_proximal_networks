@@ -73,7 +73,7 @@ PSNR: 33.19007774527125
 SSIM: 0.9316488722701189
 Finished ell1_single_dp.
 ##############################################################
-/home/simon/projects/clean_lodopab_data_prox/src/models/testing.py:178: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
+/home/simon/projects/data_proximal_networks/src/models/testing.py:179: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
   plt.figure()
 \begin{tabular}{lrrr}
 \toprule

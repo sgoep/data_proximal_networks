@@ -72,22 +72,14 @@ class ShearletTransform:
             if os.path.exists(cache_file):
                 shifted_spectrograms = np.load(cache_file)
             else:
-                alpha_shearlet = AlphaShearletTransform(
-                    width, height, alphas, real=True, parseval=True
-                )
-                shifted_spectrograms = np.asarray(
-                    [my_ifft_shift(spec) for spec in alpha_shearlet.spectrograms]
-                )
+                alpha_shearlet = AlphaShearletTransform(width, height, alphas, real=True, parseval=True)
+                shifted_spectrograms = np.asarray([my_ifft_shift(spec) for spec in alpha_shearlet.spectrograms])
                 np.save(cache_file, shifted_spectrograms)
         else:
-            alpha_shearlet = AlphaShearletTransform(
-                width, height, alphas, real=True, parseval=True
-            )
+            alpha_shearlet = AlphaShearletTransform(width, height, alphas, real=True, parseval=True)
             scales = [0] + [x[0] for x in alpha_shearlet.indices[1:]]
             self.scales = np.asarray(scales)
-            shifted_spectrograms = np.asarray(
-                [my_ifft_shift(spec) for spec in alpha_shearlet.spectrograms]
-            )
+            shifted_spectrograms = np.asarray([my_ifft_shift(spec) for spec in alpha_shearlet.spectrograms])
 
         self.scales = torch.FloatTensor(self.scales)
         self.shifted_spectrograms = torch.FloatTensor(shifted_spectrograms)
@@ -134,9 +126,7 @@ class ShearletTransform:
 
         # cs_fft = torch.fft.rfft(cs, 2, norm="ortho").unsqueeze(0)
         cs_fft = torch.fft.fft2(cs, norm="ortho")
-        res = torch.einsum(
-            "fij,fij->ij", self.shifted_spectrograms.type(torch.complex64), cs_fft
-        )
+        res = torch.einsum("fij,fij->ij", self.shifted_spectrograms.type(torch.complex64), cs_fft)
         # if cs.dtype == torch.float64:
         #     res = torch.einsum("fij,bfijc->bijc", self.shifted_spectrograms_d, cs_fft)
         # else:

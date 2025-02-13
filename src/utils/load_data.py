@@ -36,15 +36,9 @@ def read_h5_file(filename, out=None, n=None):
     if n is None:
         n = out.shape[0] if out is not None else shape[0]
     if shape[0] < n:
-        raise ValueError(
-            "requested {:d} images, but axis 0 of dataset only "
-            "has length {:d}".format(n, shape[0])
-        )
+        raise ValueError("requested {:d} images, but axis 0 of dataset only " "has length {:d}".format(n, shape[0]))
     if out is not None and out.shape[0] < n:
-        raise ValueError(
-            "requested {:d} images, but axis 0 of `out` only has "
-            "length {:d}".format(n, out.shape[0])
-        )
+        raise ValueError("requested {:d} images, but axis 0 of `out` only has " "length {:d}".format(n, out.shape[0]))
     if out is None:
         out = np.zeros((n,) + shape[1:], dtype=np.float32)
     with h5py.File(filename, "r") as file:

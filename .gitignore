@@ -1,6 +1,10 @@
-data/
-models/
+data/data_lodopab/
+data/data_synthetic/
+data/LotusData128.mat
+data/LotusData256.mat
 plots/
 results/
+models/lodopab/
+models/synthetic/
 
 run_*

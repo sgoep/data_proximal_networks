@@ -79,9 +79,7 @@ def ell1_wavelet(
         )
 
         sh_f = wavelet(f.unsqueeze(0).unsqueeze(0))  # Apply DWT
-        z_1 = shrink_(
-            sh_f + u_1, w * p_0 / p_1
-        )  # Using only the approximation coefficients
+        z_1 = shrink_(sh_f + u_1, w * p_0 / p_1)  # Using only the approximation coefficients
         z_2 = (f + u_2).clamp_min(0)
         u_1 = my_add(u_1, my_diff(sh_f, z_1))
         u_2 = u_2 + f - z_2

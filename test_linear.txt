@@ -1,1 +1,0 @@
-/home/simon/miniconda3/envs/data_prox/bin/python: Error while finding module specification for 'torch_radon_linear.py' (ModuleNotFoundError: __path__ attribute not found on 'torch_radon_linear' while trying to find 'torch_radon_linear.py')

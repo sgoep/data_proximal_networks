@@ -163,9 +163,7 @@ def get_radon_operator(N, phi, num_angles, det_count, det_spacing, clip_to_circl
     return radon
 
 
-def get_radon_operator_null_space(
-    N, phi, num_angles, det_count, det_spacing, clip_to_circle
-):
+def get_radon_operator_null_space(N, phi, num_angles, det_count, det_spacing, clip_to_circle):
     angles = np.linspace(0, np.pi, num_angles, endpoint=False)
 
     angles = angles[angles > phi]
@@ -261,9 +259,7 @@ if __name__ == "__main__":
     NUM_ANGLES = len(angles)
 
     print("Create operator and data.")
-    radon = torch_radon.Radon(
-        128, angles, det_count=128, det_spacing=1, clip_to_circle=True
-    )
+    radon = torch_radon.Radon(128, angles, det_count=128, det_spacing=1, clip_to_circle=True)
 
     sinogram = radon.forward(x)
     noise = torch.randn(*sinogram.shape).to(device)

@@ -41,11 +41,7 @@ def test_init_recon(example):
         torch.manual_seed(1)
 
         sinogram = radon_limited.forward(X)
-        noise = (
-            0.03
-            * torch.max(torch.abs(sinogram))
-            * torch.randn(*sinogram.shape).to(config.device)
-        )
+        noise = 0.03 * torch.max(torch.abs(sinogram)) * torch.randn(*sinogram.shape).to(config.device)
         sinogram += noise
         # sinogram = extension_with_zero(sinogram)
     else:
@@ -85,9 +81,7 @@ def test_init_recon(example):
         X = torch.Tensor(X.squeeze()).to("cuda")
 
         sinogram_tensor = torch.Tensor(data).to("cuda")
-        a = linear_regression(
-            radon_limited.forward(X), sinogram_tensor, lr=0.0001, num_iterations=2000
-        )
+        a = linear_regression(radon_limited.forward(X), sinogram_tensor, lr=0.0001, num_iterations=2000)
 
         sinogram = a * sinogram_tensor  # + b
         # sinogram = sinogram_tensor
@@ -100,10 +94,7 @@ def test_init_recon(example):
 
         plt.figure()
         plt.imshow(
-            radon_limited.backward(filter_sinogram(radon_limited.forward(X)))
-            .cpu()
-            .numpy()
-            .squeeze(),
+            radon_limited.backward(filter_sinogram(radon_limited.forward(X))).cpu().numpy().squeeze(),
             cmap="gray",
         )
         plt.colorbar()
@@ -121,9 +112,7 @@ def test_init_recon(example):
     Niter = 100
     from pytorch_wavelets import DWTForward, DWTInverse
 
-    wavelet = DWTForward(
-        J=3, mode="zero", wave="db3"
-    ).cuda()  # Accepts all wave types available to PyWavelets
+    wavelet = DWTForward(J=3, mode="zero", wave="db3").cuda()  # Accepts all wave types available to PyWavelets
     iwavelet = DWTInverse(mode="zero", wave="db3").cuda()
 
     # f = ell1_wavelet(

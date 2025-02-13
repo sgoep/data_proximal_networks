@@ -108,20 +108,14 @@ def tv(
         ubarx, ubary = my_grad(ubar)
         if alpha > 0:
 
-            qx = (alpha * (qx + grad_scale * sigma * ubarx)) / torch.maximum(
-                alpha, torch.abs(qx + grad_scale * sigma * ubarx)
-            )
+            qx = (alpha * (qx + grad_scale * sigma * ubarx)) / torch.maximum(alpha, torch.abs(qx + grad_scale * sigma * ubarx))
             # print(qx)
-            qy = (alpha * (qy + grad_scale * sigma * ubary)) / torch.maximum(
-                alpha, torch.abs(qy + grad_scale * sigma * ubary)
-            )
+            qy = (alpha * (qy + grad_scale * sigma * ubary)) / torch.maximum(alpha, torch.abs(qy + grad_scale * sigma * ubary))
 
             # qx = alpha * (qx + grad_scale * sigma * ubarx)/torch.maximum(torch.sqrt(torch.sum(qx**2, 0))/alpha, ones)
             # qy = alpha * (qy + grad_scale * sigma * ubary)/torch.maximum(torch.sqrt(torch.sum(qy**2, 0))/alpha, ones)
 
-            uiter = torch.maximum(
-                zero_t, u - tau * (A.backward(p) - grad_scale * my_div(qx, qy))
-            )
+            uiter = torch.maximum(zero_t, u - tau * (A.backward(p) - grad_scale * my_div(qx, qy)))
             # uiter = u - tau * (A.backward(p) + grad_scale * my_div(qx, qy))
         else:
             uiter = torch.maximum(zero_t, u - tau * A.backward(p))
@@ -137,10 +131,7 @@ def tv(
             result = squared_difference / denominator
             error[k] = torch.sum(result)
         if print_flag and np.mod(k + 1, 100) == 0:
-            print(
-                f"TV Iteration: {str(k+1)} / {str(Niter)}, "
-                f"Error: {str(error[k].item())}"
-            )
+            print(f"TV Iteration: {str(k+1)} / {str(Niter)}, " f"Error: {str(error[k].item())}")
 
     return ubar
 
@@ -159,9 +150,7 @@ if __name__ == "__main__":
     NUM_ANGLES = len(angles)
 
     print("Create Radon operator and data.")
-    radon = torch_radon.Radon(
-        128, angles, det_count=128, det_spacing=1, clip_to_circle=True
-    )
+    radon = torch_radon.Radon(128, angles, det_count=128, det_spacing=1, clip_to_circle=True)
 
     sinogram = radon.forward(x)
     noise = torch.randn(*sinogram.shape).to(device)

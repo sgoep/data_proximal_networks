@@ -1,0 +1,25 @@
+# Added by Warewulf  2024-07-01
+Host *
+   IdentityFile ~/.ssh/cluster
+   StrictHostKeyChecking=no
+
+Host github.com
+  AddKeysToAgent yes
+  IgnoreUnknown UseKeychain
+  UseKeychain yes
+  IdentityFile ~/.ssh/id_ed25519
+~                                                                              
+~                                                                              
+~                                                                              
+~                                                                              
+~                                                                              
+~                                                                              
+~                                                                              
+~                                                                              
+~                                                                              
+~                                                                              
+~                                                                              
+~                                                                              
+~                                                                              
+~                                                                              
+"~/.ssh/config" 10L, 215C                                    6,15          All

@@ -5,6 +5,12 @@ import torch
 import os 
 from misc.radon_operator import ram_lak_filter, get_matrix
 from config import config
+import pandas as pd
+
+
+from skimage.metrics import structural_similarity   as ssim
+from skimage.metrics import mean_squared_error      as mse
+from skimage.metrics import peak_signal_noise_ratio as psnr
 
 def my_grad(X):
     fx = torch.cat((X[1:,:], X[-1,:].unsqueeze(0)), dim=0) - X
@@ -22,7 +28,7 @@ def my_div(Px, Py):
 
     return fx + fy
 
-def tv(x0, A, g, alpha, L, Niter, f):
+def tv(x0, A, g, alpha, L, Niter, f=None, print_flag=True):
 
     tau = 1/L
     sigma = 1/L
@@ -61,49 +67,66 @@ def tv(x0, A, g, alpha, L, Niter, f):
         ubar = uiter + theta*(uiter - u)
         u = ubar
         
-        error[k] = torch.sum(torch.abs(ubar - f)**2)/torch.sum(torch.abs(f)**2)
-        print('TV Iteration: ' + str(k+1) + '/' + str(Niter) + ', Error: ' + str(error[k]))
+        if f is not None:
+            error[k] = torch.sum(torch.abs(ubar - f)**2)/torch.sum(torch.abs(f)**2)
+        if print_flag:
+            print('TV Iteration: ' + str(k+1) + '/' + str(Niter) + ', Error: ' + str(error[k].item()))
       
     rec = torch.reshape(u, [m, n])
     return rec
 
 
-if __name__ == "__main__":
-    index = 1
+# # if __name__ == "__main__":
+# index = 1
 
-    X = np.load(f"./data/phantom/phantom_{str(index)}.npy")
-    N = 128
-    Nal = 180
-    Ns = 200
-    al_full = np.linspace(-np.pi/2, np.pi/2*(1-1/Nal), Nal, endpoint=True)
-    Phi = np.pi/3
-    al1 = al_full[abs(al_full)<=Phi]
-    A1 = get_matrix(N, Ns, al1)
+# X = np.load(f"./data/phantom/phantom_{str(index)}.npy")
+# N = 128
+# Nal = 180
+# Ns = 200
+# al_full = np.linspace(-np.pi/2, np.pi/2*(1-1/Nal), Nal, endpoint=True)
+# Phi = np.pi/3
+# al1 = al_full[abs(al_full)<=Phi]
+# A1 = get_matrix(N, Ns, al1)
 
-    X = torch.Tensor(X)
-    g1 = A1.matmul(X.reshape(-1, 1)).reshape(len(al1), Ns)
+# X = torch.Tensor(X)
+# g1 = A1.matmul(X.reshape(-1, 1)).reshape(len(al1), Ns)
 
-    delta = 0.03
-    eta   = torch.abs(g1).max()*torch.randn(*g1.shape)
-    noise = delta*eta
-    gnoise = g1 + noise
+# delta = 0.05
+# eta   = torch.abs(g1).max()*torch.randn(*g1.shape)
+# noise = delta*eta
+# gnoise = g1 + noise
 
 
-    import matplotlib.pyplot as plt
-    fbp = A1.T.matmul(ram_lak_filter(gnoise).reshape(-1, 1)).reshape(N, N)
-    plt.figure()
-    plt.imshow(fbp)
-    plt.colorbar()
+# import matplotlib.pyplot as plt
+# fbp = A1.T.matmul(ram_lak_filter(gnoise).reshape(-1, 1)).reshape(N, N)
+# plt.figure()
+# plt.imshow(fbp)
+# plt.colorbar()
 
-    x0 = torch.zeros_like(X)
-    alpha = 0.1
-    L = 200
-    Niter = 1000
-    rec = tv(x0, A1, gnoise, alpha, L, Niter, X)
+# x0 = torch.zeros_like(X)
+# alpha = 0.1
+# L = 200
+# Niter = 500
 
-    plt.figure()
-    plt.imshow(rec)
-    plt.colorbar()
+# errors = {}
+# figures = {}
+# for alpha in [0.01, 0.05, 0.1, 0.5]:
+#     Y = tv(x0, A1, gnoise, alpha, L, Niter, X)
+    
+#     errors[alpha] = {
+#         "MSE": mse(X.cpu().numpy().flatten(), Y.cpu().numpy().flatten()),
+#         "SSIM": ssim(X.cpu().numpy(), Y.cpu().numpy(), data_range=X.cpu().numpy().max() - X.cpu().numpy().min()),
+#         "PSNR": psnr(X.cpu().numpy().flatten(), Y.cpu().numpy().flatten())
+#     }
+#     plt.figure()
+#     plt.imshow(Y)
+#     plt.title(alpha)
+#     plt.colorbar()
+
+# error_df = pd.DataFrame.from_dict(errors)
+
+# error_df.to_csv("error_table_tv_recon_005.csv")
+
 
 # X = torch.Tensor(X).to("cuda")
 # # xx, xy = my_grad(X)

@@ -77,9 +77,11 @@ def TRAIN(model, TrainDataGenerator, TestDataGenerator, error, optimizer, device
     return history, train_loss_list, val_loss_list
 
 
-def start_training(CONSTRAINT, INITRECON):
+def start_training(CONSTRAINT, INITRECON, null_space_network, model_name):
     
-    model = UNet(1, 1, CONSTRAINT).to(config.device)
+    model = UNet(1, 1, CONSTRAINT, null_space_network).to(config.device)
+    
+    torch.manual_seed(42)
     model.apply(init_weights)
      
     model_optimizer = optim.Adam(model.parameters(), lr=config.lr)
@@ -95,7 +97,7 @@ def start_training(CONSTRAINT, INITRECON):
     TrainDataGen = torch.utils.data.DataLoader(model_train_set, **model_params)
     TestDataGen  = torch.utils.data.DataLoader(model_test_set,  **model_params)
     
-    model_name = f'data_prox_network_constraint_{str(CONSTRAINT)}_init_regul_{str(INITRECON)}'
+    # model_name = f'data_prox_network_constraint_{str(CONSTRAINT)}_init_regul_{str(INITRECON)}'
     
     print('##################### Start training ######################### ')
     print('Model: ' + model_name) 
@@ -132,8 +134,18 @@ def start_training(CONSTRAINT, INITRECON):
 
 if __name__ == "__main__":
 
-    start_training(False, False)
-    start_training(False, True)
-    start_training(True, False)
-    start_training(True, True)
+    # FBP + RES
+    start_training(CONSTRAINT=False, INITRECON=False, null_space_network=False, name="FBP_RES")
+    
+    # TV + RES
+    start_training(CONSTRAINT=False, INITRECON=True, null_space_network=False, name="TV_RES")
+    
+    # FBP + NSN
+    start_training(CONSTRAINT=False, INITRECON=False, null_space_network=True, name="FBP_NSN")
+    
+    # TV + NSN
+    start_training(CONSTRAINT=False, INITRECON=True, null_space_network=True, name="TV_NSN")
+
+    # TV + DP
+    start_training(CONSTRAINT=True, INITRECON=True, null_space_network=True, name="TV_DP")
     

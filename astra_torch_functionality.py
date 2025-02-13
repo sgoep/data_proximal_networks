@@ -45,7 +45,7 @@ A2 = get_matrix(N, Ns, al2.numpy())
 # f = f / torch.max(f)
 
 index = 1
-f = np.load(f'./data/phantom/phantom_{str(index)}.npy')
+f = np.load(f'./data_astra/phantom/phantom_{str(index)}.npy')
 f = torch.Tensor(f)
 f = f / torch.max(f)
 

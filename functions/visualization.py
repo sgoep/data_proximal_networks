@@ -8,7 +8,7 @@ def visualization_with_zoom(x, zoom, name):
     d = c + 30
 
     fig, ax = plt.subplots()
-    plt.imshow(x, cmap='gray')
+    plt.imshow(x)#, cmap='gray')
     plt.axis('off')
     
     if zoom:
@@ -17,7 +17,7 @@ def visualization_with_zoom(x, zoom, name):
         sub_axes = plt.axes([.55, .62, .25, .25]) 
         for axis in ['top','bottom','left','right']:
             sub_axes.spines[axis].set_linewidth(1.5)
-        sub_axes.imshow(x[a:b, c:d], cmap='gray') 
+        sub_axes.imshow(x[a:b, c:d])#, cmap='gray') 
         sub_axes.spines['bottom'].set_color('red')
         sub_axes.spines['top'].set_color('red')
         sub_axes.spines['left'].set_color('red')

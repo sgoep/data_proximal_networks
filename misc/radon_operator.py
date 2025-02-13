@@ -2,12 +2,25 @@
 import numpy as np
 import astra
 import torch
+from config import config
+
+def ram_lak_filter_np(sinogram):
+    num_projections, num_detectors = sinogram.shape
+    freqs = np.fft.fftfreq(num_detectors).reshape(1, -1)
+    filter = np.abs(freqs)
+    filtered_sinogram = np.zeros_like(sinogram)
+    for i in range(num_projections):
+        projection_fft = np.fft.fft(sinogram[i, :])
+        filtered_projection_fft = projection_fft * filter
+        filtered_projection = np.fft.ifft(filtered_projection_fft).real
+        filtered_sinogram[i, :] = filtered_projection * (2 / np.sqrt(num_detectors))**2
+    return filtered_sinogram
 
 def ram_lak_filter(sinogram):
     num_projections, num_detectors = sinogram.shape
     freqs = torch.fft.fftfreq(num_detectors).reshape(1, -1)
-    filter = torch.abs(freqs)
-    filtered_sinogram = torch.zeros_like(sinogram)
+    filter = torch.abs(freqs).to(config.device)
+    filtered_sinogram = torch.zeros_like(sinogram).to(config.device)
     for i in range(num_projections):
         projection_fft = torch.fft.fft(sinogram[i, :])
         filtered_projection_fft = projection_fft * filter
@@ -23,6 +36,87 @@ def get_matrix(N, Ns, al):
     mat_id = astra.projector.matrix(proj_id)
     A = astra.matrix.get(mat_id)
     return torch.Tensor(A.toarray()).to_sparse()
+    # return A.toarray()
+
+
+def get_real_matrix(angles):
+    # Distances and pixel size in mm
+    dist_src_center = 410.66
+    dist_src_detector = 553.74
+    pixelsize = 0.2 * dist_src_center / dist_src_detector
+    # pixelsize = 0.05
+    num_detectors = 560
+    vol_geom_id = astra.create_vol_geom(512, 512)
+    # self.angles = np.linspace(0, 2 * np.pi, 721)
+    angles = angles*np.pi/180
+
+    projection_id = astra.create_proj_geom(
+        "fanflat",
+        dist_src_detector / dist_src_center,
+        num_detectors,
+        angles,
+        dist_src_center / pixelsize,
+        (dist_src_detector - dist_src_center) / pixelsize)
+
+    projector_id = astra.create_projector("line_fanflat", projection_id, vol_geom_id)
+    mat_id = astra.projector.matrix(projector_id)
+    A = astra.matrix.get(mat_id)
+    return A.toarray()
+
+class RadonOperator:
+    def __init__(self, angles):
+        # Distances and pixel size in mm
+        dist_src_center = 410.66
+        dist_src_detector = 553.74
+        pixelsize = 0.2 * dist_src_center / dist_src_detector
+        # pixelsize = 0.05
+        self.num_detectors = 560
+        self.vol_geom_id = astra.create_vol_geom(512, 512)
+        # self.angles = np.linspace(0, 2 * np.pi, 721)
+        self.angles = angles*np.pi/180
+
+        self.projection_id = astra.create_proj_geom(
+            "fanflat",
+            dist_src_detector / dist_src_center,
+            self.num_detectors,
+            self.angles,
+            dist_src_center / pixelsize,
+            (dist_src_detector - dist_src_center) / pixelsize)
+        # self.projection_id = astra.create_proj_geom(
+        #     "cone",
+        #     "det_row_count": 2368,
+        #     "det_col_count": 2240,
+        #     "angles": angles,
+        # )
+
+        projector_id = astra.create_projector("cuda", self.projection_id, self.vol_geom_id)
+
+        volume_id = astra.data2d.create("-vol", self.vol_geom_id)
+
+        self.volume_id = volume_id
+        self.projector_id = projector_id
+
+    def forward(self, image):
+        # image_copy = image.copy()
+        # image_copy = image.clone().detach()
+        if not isinstance(image, np.ndarray):
+            image = image.clone().detach().cpu().numpy()
+        astra.data2d.store(self.volume_id, image)
+        sinogram_id, sinogram = astra.create_sino(self.volume_id, self.projector_id)
+        # Release memory
+        astra.data2d.delete(sinogram_id)
+        return sinogram
+    
+    def backward(self, data):
+        id, backproj = astra.create_backprojection(data, self.projector_id, returnData=True)
+        astra.data2d.delete(id)
+        return backproj
+    
+    def fbp(self, data):
+        id, fbp = astra.creators.create_reconstruction("FBP_CUDA", self.projector_id, data, returnData=True, filterType="ram-lak")
+        astra.data2d.delete(id)
+        return fbp
+
 
 # def filter_sinogram_torch(g):
 #     a, b = g.shape

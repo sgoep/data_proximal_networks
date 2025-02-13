@@ -14,9 +14,9 @@ class config:
     len_train  = 500
     len_test   = 100
     num_epochs = 50
-    batch_size = 4
+    batch_size = 6
     shuffle = True
-    num_workers = 4
+    num_workers = 2
    
     lr = 1e-4
  

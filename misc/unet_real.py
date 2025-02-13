@@ -2,10 +2,11 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from misc.custom_layers_astra import proximal_layer, null_space_layer, range_layer
+from misc.custom_layers_real import proximal_layer, null_space_layer, range_layer
 from config import config
-from misc.radon_operator import ram_lak_filter, get_matrix
+from misc.radon_operator import RadonOperator
 import numpy as np
+import scipy.io
 
 class DoubleConv(nn.Module):
     """(convolution => [BN] => ReLU) * 2"""
@@ -103,17 +104,16 @@ class UNet(nn.Module):
         self.tanh = nn.Tanh()
         self.CONSTRAINT = CONSTRAINT
 
-        N = 128
-        Ns = 200
-        Nal = 180
-        Phi = np.pi/3
-        al_full = np.linspace(-np.pi/2, np.pi/2, Nal, endpoint=False)
-        al1 = al_full[np.abs(al_full)<=Phi]
-        Am = get_matrix(N, Ns, al1).to(config.device)
-        # Bm = torch.Tensor(get_radon_matrix(128, 128, Ns, al2).toarray()).to("cuda")
-        
-        self.A = lambda x: torch.matmul(Am, x.reshape(-1, 1)).reshape(len(al1), Ns)
-        self.B = lambda y: torch.matmul(Am.T, ram_lak_filter(y).reshape(-1, 1)).reshape(N, N)
+
+        sample = "01a"
+        ct_data = scipy.io.loadmat(f'data_htc2022/htc2022_test_data/htc2022_{sample}_limited.mat')
+        ct_data = ct_data["CtDataLimited"][0][0]
+        angles = ct_data["parameters"]["angles"][0, 0][0]
+
+        Aop = RadonOperator(angles)
+        self.A = lambda x: Aop.forward(x)
+        # AT = lambda y: Aop.backward(y)
+        self.B = lambda z: Aop.fbp(z)
         
         self.proximal_layer   = proximal_layer()
         self.null_space_layer = null_space_layer()

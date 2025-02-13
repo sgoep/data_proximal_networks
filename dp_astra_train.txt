@@ -1,0 +1,183 @@
+##################### Start training ######################### 
+Model: TV_RES
+Size training set: 500
+Size test set: 100
+Epochs: 50
+Learning rate: 0.0001
+Training on: cuda
+############################################################## 
+Epoch 1/50, Train Loss: 0.00029832 and Val Loss: 0.00113704
+Epoch 2/50, Train Loss: 0.00021284 and Val Loss: 0.00102136
+Epoch 3/50, Train Loss: 0.00018927 and Val Loss: 0.00089168
+Epoch 4/50, Train Loss: 0.00017327 and Val Loss: 0.00080901
+Epoch 5/50, Train Loss: 0.00015987 and Val Loss: 0.00074642
+Epoch 6/50, Train Loss: 0.00015065 and Val Loss: 0.00074921
+Epoch 7/50, Train Loss: 0.00014434 and Val Loss: 0.00069987
+Epoch 8/50, Train Loss: 0.00013861 and Val Loss: 0.00065987
+Epoch 9/50, Train Loss: 0.00013305 and Val Loss: 0.00064495
+Epoch 10/50, Train Loss: 0.00013144 and Val Loss: 0.00064073
+Epoch 11/50, Train Loss: 0.00012571 and Val Loss: 0.00060905
+Epoch 12/50, Train Loss: 0.00012073 and Val Loss: 0.00058838
+Epoch 13/50, Train Loss: 0.00011756 and Val Loss: 0.00057098
+Epoch 14/50, Train Loss: 0.00011352 and Val Loss: 0.00054829
+Epoch 15/50, Train Loss: 0.00011020 and Val Loss: 0.00053394
+Epoch 16/50, Train Loss: 0.00010618 and Val Loss: 0.00053358
+Epoch 17/50, Train Loss: 0.00010519 and Val Loss: 0.00051925
+Epoch 18/50, Train Loss: 0.00010490 and Val Loss: 0.00049439
+Epoch 19/50, Train Loss: 0.00010024 and Val Loss: 0.00050103
+Epoch 20/50, Train Loss: 0.00009802 and Val Loss: 0.00048207
+Epoch 21/50, Train Loss: 0.00009538 and Val Loss: 0.00048913
+Epoch 22/50, Train Loss: 0.00009306 and Val Loss: 0.00047286
+Epoch 23/50, Train Loss: 0.00009227 and Val Loss: 0.00045669
+Epoch 24/50, Train Loss: 0.00009111 and Val Loss: 0.00043234
+Epoch 25/50, Train Loss: 0.00008860 and Val Loss: 0.00043674
+Epoch 26/50, Train Loss: 0.00008856 and Val Loss: 0.00044168
+Epoch 27/50, Train Loss: 0.00008547 and Val Loss: 0.00041531
+Epoch 28/50, Train Loss: 0.00008353 and Val Loss: 0.00042572
+Epoch 29/50, Train Loss: 0.00008378 and Val Loss: 0.00041503
+Epoch 30/50, Train Loss: 0.00008201 and Val Loss: 0.00039814
+Epoch 31/50, Train Loss: 0.00008073 and Val Loss: 0.00044540
+Epoch 32/50, Train Loss: 0.00007988 and Val Loss: 0.00038490
+Epoch 33/50, Train Loss: 0.00007808 and Val Loss: 0.00040985
+Epoch 34/50, Train Loss: 0.00007741 and Val Loss: 0.00037464
+Epoch 35/50, Train Loss: 0.00007501 and Val Loss: 0.00043508
+Epoch 36/50, Train Loss: 0.00007633 and Val Loss: 0.00037076
+Epoch 37/50, Train Loss: 0.00007429 and Val Loss: 0.00036943
+Epoch 38/50, Train Loss: 0.00007181 and Val Loss: 0.00035145
+Epoch 39/50, Train Loss: 0.00007152 and Val Loss: 0.00035423
+Epoch 40/50, Train Loss: 0.00006984 and Val Loss: 0.00036275
+Epoch 41/50, Train Loss: 0.00007046 and Val Loss: 0.00033790
+Epoch 42/50, Train Loss: 0.00006887 and Val Loss: 0.00034048
+Epoch 43/50, Train Loss: 0.00006876 and Val Loss: 0.00033928
+Epoch 44/50, Train Loss: 0.00006646 and Val Loss: 0.00033348
+Epoch 45/50, Train Loss: 0.00006537 and Val Loss: 0.00032624
+Epoch 46/50, Train Loss: 0.00006443 and Val Loss: 0.00032218
+Epoch 47/50, Train Loss: 0.00006456 and Val Loss: 0.00031903
+Epoch 48/50, Train Loss: 0.00006463 and Val Loss: 0.00031821
+Epoch 49/50, Train Loss: 0.00006216 and Val Loss: 0.00033867
+Epoch 50/50, Train Loss: 0.00006438 and Val Loss: 0.00031126
+######################## Saving model ######################## 
+###### TV_RES ######
+########################## Finished ########################## 
+##################### Start training ######################### 
+Model: TV_NSN
+Size training set: 500
+Size test set: 100
+Epochs: 50
+Learning rate: 0.0001
+Training on: cuda
+############################################################## 
+Epoch 1/50, Train Loss: 0.00029822 and Val Loss: 0.00113493
+Epoch 2/50, Train Loss: 0.00021325 and Val Loss: 0.00100071
+Epoch 3/50, Train Loss: 0.00019002 and Val Loss: 0.00089136
+Epoch 4/50, Train Loss: 0.00017338 and Val Loss: 0.00081332
+Epoch 5/50, Train Loss: 0.00015977 and Val Loss: 0.00075334
+Epoch 6/50, Train Loss: 0.00015223 and Val Loss: 0.00075700
+Epoch 7/50, Train Loss: 0.00014448 and Val Loss: 0.00070064
+Epoch 8/50, Train Loss: 0.00013863 and Val Loss: 0.00067157
+Epoch 9/50, Train Loss: 0.00013294 and Val Loss: 0.00063196
+Epoch 10/50, Train Loss: 0.00013043 and Val Loss: 0.00063429
+Epoch 11/50, Train Loss: 0.00012596 and Val Loss: 0.00060148
+Epoch 12/50, Train Loss: 0.00012067 and Val Loss: 0.00058427
+Epoch 13/50, Train Loss: 0.00011650 and Val Loss: 0.00056645
+Epoch 14/50, Train Loss: 0.00011239 and Val Loss: 0.00054028
+Epoch 15/50, Train Loss: 0.00011037 and Val Loss: 0.00053227
+Epoch 16/50, Train Loss: 0.00010591 and Val Loss: 0.00051722
+Epoch 17/50, Train Loss: 0.00010387 and Val Loss: 0.00052014
+Epoch 18/50, Train Loss: 0.00010385 and Val Loss: 0.00049789
+Epoch 19/50, Train Loss: 0.00010001 and Val Loss: 0.00049242
+Epoch 20/50, Train Loss: 0.00009866 and Val Loss: 0.00047811
+Epoch 21/50, Train Loss: 0.00009527 and Val Loss: 0.00047394
+Epoch 22/50, Train Loss: 0.00009378 and Val Loss: 0.00046125
+Epoch 23/50, Train Loss: 0.00009059 and Val Loss: 0.00044072
+Epoch 24/50, Train Loss: 0.00008888 and Val Loss: 0.00043842
+Epoch 25/50, Train Loss: 0.00008757 and Val Loss: 0.00043788
+Epoch 26/50, Train Loss: 0.00008551 and Val Loss: 0.00042729
+Epoch 27/50, Train Loss: 0.00008549 and Val Loss: 0.00041621
+Epoch 28/50, Train Loss: 0.00008294 and Val Loss: 0.00040677
+Epoch 29/50, Train Loss: 0.00008243 and Val Loss: 0.00040340
+Epoch 30/50, Train Loss: 0.00008199 and Val Loss: 0.00040246
+Epoch 31/50, Train Loss: 0.00007892 and Val Loss: 0.00041715
+Epoch 32/50, Train Loss: 0.00007965 and Val Loss: 0.00038592
+Epoch 33/50, Train Loss: 0.00007713 and Val Loss: 0.00037613
+Epoch 34/50, Train Loss: 0.00007605 and Val Loss: 0.00037337
+Epoch 35/50, Train Loss: 0.00007422 and Val Loss: 0.00035778
+Epoch 36/50, Train Loss: 0.00007403 and Val Loss: 0.00036685
+Epoch 37/50, Train Loss: 0.00007288 and Val Loss: 0.00036976
+Epoch 38/50, Train Loss: 0.00007243 and Val Loss: 0.00034584
+Epoch 39/50, Train Loss: 0.00007089 and Val Loss: 0.00036611
+Epoch 40/50, Train Loss: 0.00006939 and Val Loss: 0.00033672
+Epoch 41/50, Train Loss: 0.00006829 and Val Loss: 0.00033091
+Epoch 42/50, Train Loss: 0.00006704 and Val Loss: 0.00032563
+Epoch 43/50, Train Loss: 0.00006705 and Val Loss: 0.00033557
+Epoch 44/50, Train Loss: 0.00006601 and Val Loss: 0.00033105
+Epoch 45/50, Train Loss: 0.00006500 and Val Loss: 0.00031870
+Epoch 46/50, Train Loss: 0.00006416 and Val Loss: 0.00031840
+Epoch 47/50, Train Loss: 0.00006331 and Val Loss: 0.00030765
+Epoch 48/50, Train Loss: 0.00006240 and Val Loss: 0.00030797
+Epoch 49/50, Train Loss: 0.00006139 and Val Loss: 0.00030983
+Epoch 50/50, Train Loss: 0.00006038 and Val Loss: 0.00028992
+######################## Saving model ######################## 
+###### TV_NSN ######
+########################## Finished ########################## 
+##################### Start training ######################### 
+Model: TV_DP
+Size training set: 500
+Size test set: 100
+Epochs: 50
+Learning rate: 0.0001
+Training on: cuda
+############################################################## 
+Epoch 1/50, Train Loss: 0.00026069 and Val Loss: 0.00105304
+Epoch 2/50, Train Loss: 0.00019399 and Val Loss: 0.00092372
+Epoch 3/50, Train Loss: 0.00017365 and Val Loss: 0.00084747
+Epoch 4/50, Train Loss: 0.00015916 and Val Loss: 0.00074064
+Epoch 5/50, Train Loss: 0.00014950 and Val Loss: 0.00071349
+Epoch 6/50, Train Loss: 0.00014036 and Val Loss: 0.00069455
+Epoch 7/50, Train Loss: 0.00013330 and Val Loss: 0.00065128
+Epoch 8/50, Train Loss: 0.00012886 and Val Loss: 0.00062757
+Epoch 9/50, Train Loss: 0.00012448 and Val Loss: 0.00059945
+Epoch 10/50, Train Loss: 0.00012172 and Val Loss: 0.00059302
+Epoch 11/50, Train Loss: 0.00011628 and Val Loss: 0.00056751
+Epoch 12/50, Train Loss: 0.00011141 and Val Loss: 0.00053785
+Epoch 13/50, Train Loss: 0.00010783 and Val Loss: 0.00051643
+Epoch 14/50, Train Loss: 0.00010377 and Val Loss: 0.00051020
+Epoch 15/50, Train Loss: 0.00010069 and Val Loss: 0.00049527
+Epoch 16/50, Train Loss: 0.00009829 and Val Loss: 0.00048331
+Epoch 17/50, Train Loss: 0.00009717 and Val Loss: 0.00047805
+Epoch 18/50, Train Loss: 0.00009569 and Val Loss: 0.00045492
+Epoch 19/50, Train Loss: 0.00009225 and Val Loss: 0.00046340
+Epoch 20/50, Train Loss: 0.00008967 and Val Loss: 0.00043777
+Epoch 21/50, Train Loss: 0.00008778 and Val Loss: 0.00045764
+Epoch 22/50, Train Loss: 0.00008691 and Val Loss: 0.00041657
+Epoch 23/50, Train Loss: 0.00008531 and Val Loss: 0.00041120
+Epoch 24/50, Train Loss: 0.00008348 and Val Loss: 0.00039661
+Epoch 25/50, Train Loss: 0.00008007 and Val Loss: 0.00039610
+Epoch 26/50, Train Loss: 0.00007923 and Val Loss: 0.00039244
+Epoch 27/50, Train Loss: 0.00007858 and Val Loss: 0.00038102
+Epoch 28/50, Train Loss: 0.00007865 and Val Loss: 0.00040863
+Epoch 29/50, Train Loss: 0.00007659 and Val Loss: 0.00036593
+Epoch 30/50, Train Loss: 0.00007559 and Val Loss: 0.00036048
+Epoch 31/50, Train Loss: 0.00007460 and Val Loss: 0.00036532
+Epoch 32/50, Train Loss: 0.00007127 and Val Loss: 0.00034719
+Epoch 33/50, Train Loss: 0.00007066 and Val Loss: 0.00034847
+Epoch 34/50, Train Loss: 0.00006881 and Val Loss: 0.00034612
+Epoch 35/50, Train Loss: 0.00006784 and Val Loss: 0.00033060
+Epoch 36/50, Train Loss: 0.00006671 and Val Loss: 0.00032454
+Epoch 37/50, Train Loss: 0.00006607 and Val Loss: 0.00033521
+Epoch 38/50, Train Loss: 0.00006526 and Val Loss: 0.00032135
+Epoch 39/50, Train Loss: 0.00006458 and Val Loss: 0.00031585
+Epoch 40/50, Train Loss: 0.00006316 and Val Loss: 0.00031360
+Epoch 41/50, Train Loss: 0.00006161 and Val Loss: 0.00029951
+Epoch 42/50, Train Loss: 0.00006068 and Val Loss: 0.00029318
+Epoch 43/50, Train Loss: 0.00006038 and Val Loss: 0.00029957
+Epoch 44/50, Train Loss: 0.00005964 and Val Loss: 0.00029073
+Epoch 45/50, Train Loss: 0.00006100 and Val Loss: 0.00029054
+Epoch 46/50, Train Loss: 0.00005831 and Val Loss: 0.00029296
+Epoch 47/50, Train Loss: 0.00005779 and Val Loss: 0.00030208
+Epoch 48/50, Train Loss: 0.00005678 and Val Loss: 0.00027781
+Epoch 49/50, Train Loss: 0.00005503 and Val Loss: 0.00028115
+Epoch 50/50, Train Loss: 0.00005535 and Val Loss: 0.00027268
+######################## Saving model ######################## 
+###### TV_DP ######
+########################## Finished ########################## 

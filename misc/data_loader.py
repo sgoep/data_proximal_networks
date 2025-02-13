@@ -1,3 +1,4 @@
+# %%
 import numpy as np
 import torch
 
@@ -27,5 +28,8 @@ class DataLoader(torch.utils.data.Dataset):
         Y = Y[None,:,:]
         
         return X, Y
+    
 
-
+# data_loader = DataLoader([i for i in range(100)], False, False)
+# next(iter(data_loader))[0].shape
+# %%

@@ -1,0 +1,7 @@
+salloc -p a6000 -w mp-gpu4-a6000-1
+ssh mp-gpu4-a6000-1
+cd projects/data_proximal_networks
+conda activate data_prox
+python
+import torch
+torch.cuda.is_available()

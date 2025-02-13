@@ -3,10 +3,9 @@ import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from misc.unet_astra import UNet
-from misc.data_loader_astra import DataLoader
+from misc.unet_real import UNet
+from misc.data_loader_real import DataLoader
 from config import config
-
 
 def init_weights(m):
     if isinstance(m, nn.Conv2d):
@@ -72,7 +71,14 @@ def TRAIN(model, TrainDataGenerator, TestDataGenerator, error, optimizer, device
         print(f'Epoch {epoch}/{NumEpochs}, Train Loss: {train_loss:.8f} and Val Loss: {val_loss:.8f}')
 
         train_loss_list[epoch-1] = train_loss
-        val_loss_list[epoch-1]   = val_loss      
+        val_loss_list[epoch-1]   = val_loss
+
+        with open("dp_real_train.txt", "r") as w:
+            lines = w.readlines()
+        with open("dp_real_train.txt", "w") as w:
+            for line in lines:
+                if "Warning: CudaFilteredBackProjectionAlgorithm:" not in line:
+                    w.write(line)   
      
     return history, train_loss_list, val_loss_list
 
@@ -128,7 +134,7 @@ def start_training(CONSTRAINT, INITRECON, null_space_network, model_name):
     
     print('######################## Saving model ######################## ') 
     print('###### ' + model_name + ' ######') 
-    torch.save(model.state_dict(), f'models_astra_delta005/{model_name}')
+    torch.save(model.state_dict(), f'models_real/{model_name}')
     print('########################## Finished ########################## ') 
     
 
@@ -138,13 +144,13 @@ if __name__ == "__main__":
     # start_training(CONSTRAINT=False, INITRECON=False, null_space_network=False, model_name="FBP_RES")
     
     # TV + RES
-    start_training(CONSTRAINT=False, INITRECON=True, null_space_network=False, model_name="TV_RES")
+    # start_training(CONSTRAINT=False, INITRECON=True, null_space_network=False, model_name="TV_RES")
     
     # FBP + NSN
     # start_training(CONSTRAINT=False, INITRECON=False, null_space_network=True, model_name="FBP_NSN")
     
     # TV + NSN
-    start_training(CONSTRAINT=False, INITRECON=True, null_space_network=True, model_name="TV_NSN")
+    # start_training(CONSTRAINT=False, INITRECON=True, null_space_network=True, model_name="TV_NSN")
 
     # TV + DP
     start_training(CONSTRAINT=True, INITRECON=True, null_space_network=True, model_name="TV_DP")

@@ -1,7 +1,7 @@
-from typing import List, Optional, Tuple, Union  # type: ignore
+from typing import List, Optional, Tuple, Union
 
-import numpy as np  # type: ignore
-import torch  # type: ignore
+import numpy as np
+import torch
 
 
 class DataLoader(torch.utils.data.Dataset):

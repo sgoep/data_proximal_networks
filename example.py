@@ -3,22 +3,13 @@
 # example = "lodopab"
 
 models = [
-    # "fbp_X_res",
-    "landweber_X_res",
-    "tv_X_res",
-    "ell1_X_res",
-    # "fbp_nsn",
+    "landweber_res",
+    "tv_res",
+    "ell1_res",
     "landweber_nsn",
     "tv_nsn",
     "ell1_nsn",
-    # "landweber_smooth_nsn",
-    # "tv_smooth_nsn",
-    # "ell1_smooth_nsn",
-    # "fbp_single_dp",
-    "landweber_single_dp",
-    "tv_single_dp",
-    "ell1_single_dp",
-    # "landweber_smooth_single_dp",
-    # "tv_smooth_single_dp",
-    # "ell1_smooth_single_dp",
+    "landweber_dp_nsn",
+    "tv_dp_nsn",
+    "ell1_dp_nsn",
 ]

@@ -1,11 +1,11 @@
 import argparse
 
-import matplotlib.pyplot as plt  # type: ignore
-import numpy as np  # type: ignore
+import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
-import torch  # type: ignore
-from matplotlib.colors import Normalize  # type: ignore
-from skimage.metrics import mean_squared_error as mse  # type: ignore
+import torch
+from matplotlib.colors import Normalize
+from skimage.metrics import mean_squared_error as mse
 
 from src.data.data_loader import DataLoader
 from src.models.unet import UNet
@@ -244,8 +244,8 @@ import matplotlib.pyplot as plt
 # %%
 import numpy as np
 
-x = np.load("results/figures/0000-synthetic_ell1_single_dp_image.npy")
-y = np.load("results/figures/0000-synthetic_ell1_single_dp_data.npy")
+x = np.load("results/figures/0000-synthetic_ell1_dp_nsn_image.npy")
+y = np.load("results/figures/0000-synthetic_ell1_dp_nsn_data.npy")
 
 vmin = 0
 vmax = np.max(x)

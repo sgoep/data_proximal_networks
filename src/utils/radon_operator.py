@@ -3,10 +3,10 @@ The original code was taken from
 https://github.com/matteo-ronchetti/torch-radon.
 """
 
-import numpy as np  # type: ignore
-import torch  # type: ignore
-import torch.nn.functional as F  # type: ignore
-import torch_radon  # type: ignore
+import numpy as np
+import torch
+import torch.nn.functional as F
+import torch_radon
 
 from src.utils.load_config import load_config
 
@@ -14,11 +14,11 @@ from src.utils.load_config import load_config
 
 
 try:
-    import scipy.fft  # type: ignore
+    import scipy.fft
 
     fftmodule = scipy.fft
 except ImportError:
-    import numpy.fft  # type: ignore
+    import numpy.fft
 
     fftmodule = numpy.fft
 
@@ -246,8 +246,8 @@ def get_radon_operators(example: str):
 
 if __name__ == "__main__":
     print("Test functionality of Radon operator.")
-    import h5py  # type: ignore
-    import matplotlib.pyplot as plt  # type: ignore
+    import h5py
+    import matplotlib.pyplot as plt
 
     print("Loading image.")
     device = "cuda"

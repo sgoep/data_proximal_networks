@@ -1,11 +1,11 @@
 from typing import List
 
 import matplotlib.pyplot as plt
-import numpy as np  # type: ignore
+import numpy as np
 import scipy.io
-import torch  # type: ignore
+import torch
 import torch_radon
-from matplotlib.colors import Normalize  # type: ignore
+from matplotlib.colors import Normalize
 from pytorch_wavelets import DWTForward, DWTInverse
 
 from src.algorithms.ell1_wavelet import ell1_wavelet

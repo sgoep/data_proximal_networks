@@ -10,7 +10,7 @@ import torch_radon
 from pytorch_wavelets import DWTForward, DWTInverse
 from scipy.ndimage import gaussian_filter
 from skimage.draw import ellipse
-from skimage.metrics import mean_squared_error as mse  # type: ignore
+from skimage.metrics import mean_squared_error as mse
 
 from src.algorithms.ell1_shearlet import ell1_shearlet
 from src.algorithms.ell1_wavelet import ell1_wavelet

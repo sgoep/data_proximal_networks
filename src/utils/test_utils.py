@@ -1,8 +1,8 @@
 import numpy as np
 import pandas as pd
-from skimage.metrics import mean_squared_error as mse  # type: ignore
-from skimage.metrics import peak_signal_noise_ratio as psnr  # type: ignore
-from skimage.metrics import structural_similarity as ssim  # type: ignore
+from skimage.metrics import mean_squared_error as mse
+from skimage.metrics import peak_signal_noise_ratio as psnr
+from skimage.metrics import structural_similarity as ssim
 
 metrics = ["MSE", "PSNR", "SSIM"]
 method_latex_mapping = {
@@ -11,20 +11,20 @@ method_latex_mapping = {
     "tv": "$\\signal_{\\rm TV}$",
     "ell1": "$\\signal_{\\ell_1}$",
     ####################################################
-    "fbp_X_res": "$\\signal_{\\rm FBP}^{\\rm RES}$",
-    "landweber_X_res": "$\\signal_{\\rm LANDWEBER}^{\\rm RES}$",
-    "tv_X_res": "$\\signal_{\\rm TV}^{\\rm RES}$",
-    "ell1_X_res": "$\\signal_{\\ell_1}^{\\rm RES}$",
+    "fbp_res": "$\\signal_{\\rm FBP}^{\\rm RES}$",
+    "landweber_res": "$\\signal_{\\rm LANDWEBER}^{\\rm RES}$",
+    "tv_res": "$\\signal_{\\rm TV}^{\\rm RES}$",
+    "ell1_res": "$\\signal_{\\ell_1}^{\\rm RES}$",
     ####################################################
     "fbp_nsn": "$\\signal_{\\rm FBP}^{\\rm NSN}$",
     "landweber_nsn": "$\\signal_{\\rm LANDWEBER}^{\\rm NSN}$",
     "tv_nsn": "$\\signal_{\\rm TV}^{\\rm NSN}$",
     "ell1_nsn": "$\\signal_{\\ell_1}^{\\rm NSN}$",
     ####################################################
-    "fbp_single_dp": "$\\signal_{\\rm FBP}^{\\rm DP}$",
-    "landweber_single_dp": "$\\signal_{\\rm LANDWEBER}^{\\rm DP}$",
-    "tv_single_dp": "$\\signal_{\\rm TV}^{\\rm DP}$",
-    "ell1_single_dp": "$\\signal_{\\ell_1}^{\\rm DP}$",
+    "fbp_dp_nsn": "$\\signal_{\\rm FBP}^{\\rm DP}$",
+    "landweber_dp_nsn": "$\\signal_{\\rm LANDWEBER}^{\\rm DP}$",
+    "tv_dp_nsn": "$\\signal_{\\rm TV}^{\\rm DP}$",
+    "ell1_dp_nsn": "$\\signal_{\\ell_1}^{\\rm DP}$",
     ####################################################
     ####################################################
     "fbp_smooth_nsn": "$\\signal_{\\rm FBP}^{\\rm NSN}$ smooth",
@@ -32,10 +32,10 @@ method_latex_mapping = {
     "tv_smooth_nsn": "$\\signal_{\\rm TV}^{\\rm NSN}$ smooth",
     "ell1_smooth_nsn": "$\\signal_{\\ell_1}^{\\rm NSN}$ smooth",
     ####################################################
-    "fbp_smooth_single_dp": "$\\signal_{\\rm FBP}^{\\rm DP}$ smooth",
-    "landweber_smooth_single_dp": "$\\signal_{\\rm LANDWEBER}^{\\rm DP}$ smooth",
-    "tv_smooth_single_dp": "$\\signal_{\\rm TV}^{\\rm DP}$ smooth",
-    "ell1_smooth_single_dp": "$\\signal_{\\ell_1}^{\\rm DP}$ smooth",
+    "fbp_smooth_dp_nsn": "$\\signal_{\\rm FBP}^{\\rm DP}$ smooth",
+    "landweber_smooth_dp_nsn": "$\\signal_{\\rm LANDWEBER}^{\\rm DP}$ smooth",
+    "tv_smooth_dp_nsn": "$\\signal_{\\rm TV}^{\\rm DP}$ smooth",
+    "ell1_smooth_dp_nsn": "$\\signal_{\\ell_1}^{\\rm DP}$ smooth",
     ####################################################
     ############# DATA
     ####################################################
@@ -44,20 +44,20 @@ method_latex_mapping = {
     "tv_data": "$\\forward(\\signal_{\\rm TV}) - \\forward(\\signal^\\star)$",
     "ell1_data": "$\\forward(\\signal_{\\ell_1}) - \\forward(\\signal^\\star)$",
     ####################################################
-    "fbp_X_res_data": "$\\forward(\\signal_{\\rm FBP}^{\\rm RES}$) - \\forward(\\signal^\\star)$",
-    "landweber_X_res_data": "$\\forward(\\signal_{\\rm LANDWEBER}^{\\rm RES}) - \\forward(\\signal^\\star)$",
-    "tv_X_res_data": "$\\forward(\\signal_{\\rm TV}^{\\rm RES}) - \\forward(\\signal^\\star)$",
-    "ell1_X_res_data": "$\\forward(\\signal_{\\ell_1}^{\\rm RES}) - \\forward(\\signal^\\star)$",
+    "fbp_res_data": "$\\forward(\\signal_{\\rm FBP}^{\\rm RES}$) - \\forward(\\signal^\\star)$",
+    "landweber_res_data": "$\\forward(\\signal_{\\rm LANDWEBER}^{\\rm RES}) - \\forward(\\signal^\\star)$",
+    "tv_res_data": "$\\forward(\\signal_{\\rm TV}^{\\rm RES}) - \\forward(\\signal^\\star)$",
+    "ell1_res_data": "$\\forward(\\signal_{\\ell_1}^{\\rm RES}) - \\forward(\\signal^\\star)$",
     ####################################################
     "fbp_nsn_data": "$\\forward(\\signal_{\\rm FBP}^{\\rm NSN}$) - \\forward(\\signal^\\star)$",
     "landweber_nsn_data": "$\\forward(\\signal_{\\rm LANDWEBER}^{\\rm NSN}) - \\forward(\\signal^\\star)$",
     "tv_nsn_data": "$\\forward(\\signal_{\\rm TV}^{\\rm NSN}) - \\forward(\\signal^\\star)$",
     "ell1_nsn_data": "$\\forward(\\signal_{\\ell_1}^{\\rm NSN}) - \\forward(\\signal^\\star)$",
     ####################################################
-    "fbp_single_dp_data": "$\\forward(\\signal_{\\rm FBP}^{\\rm DP}$) - \\forward(\\signal^\\star)$",
-    "landweber_single_dp_data": "$\\forward(\\signal_{\\rm LANDWEBER}^{\\rm DP}) - \\forward(\\signal^\\star)$",
-    "tv_single_dp_data": "$\\forward(\\signal_{\\rm TV}^{\\rm DP}) - \\forward(\\signal^\\star)$",
-    "ell1_single_dp_data": "$\\forward(\\signal_{\\ell_1}^{\\rm DP}) - \\forward(\\signal^\\star)$",
+    "fbp_dp_nsn_data": "$\\forward(\\signal_{\\rm FBP}^{\\rm DP}$) - \\forward(\\signal^\\star)$",
+    "landweber_dp_nsn_data": "$\\forward(\\signal_{\\rm LANDWEBER}^{\\rm DP}) - \\forward(\\signal^\\star)$",
+    "tv_dp_nsn_data": "$\\forward(\\signal_{\\rm TV}^{\\rm DP}) - \\forward(\\signal^\\star)$",
+    "ell1_dp_nsn_data": "$\\forward(\\signal_{\\ell_1}^{\\rm DP}) - \\forward(\\signal^\\star)$",
 }
 
 

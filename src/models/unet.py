@@ -2,10 +2,10 @@
 from typing import Optional, Tuple
 
 import matplotlib.pyplot as plt
-import numpy as np  # type: ignore
-import torch  # type: ignore
-import torch.nn as nn  # type: ignore
-import torch.nn.functional as F  # type: ignore
+import numpy as np
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
 
 from src.utils.load_config import load_config
 from src.utils.radon_operator import filter_sinogram, get_radon_operators
@@ -329,10 +329,10 @@ class UNet(nn.Module):
 
         if True:
             if self.model_name in [
-                "fbp_X_res",
-                "tv_X_res",
-                "ell1_X_res",
-                "landweber_X_res",
+                "fbp_res",
+                "tv_res",
+                "ell1_res",
+                "landweber_res",
             ]:
                 # RESNet
                 return x0 + res

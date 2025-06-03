@@ -1,11 +1,11 @@
 import json
 
 import matplotlib.pyplot as plt
-import numpy as np  # type: ignore
-import torch  # type: ignore
-import torch.nn as nn  # type: ignore
-import torch.nn.functional as F  # type: ignore
-import torch.optim as optim  # type: ignore
+import numpy as np
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import torch.optim as optim
 
 # from example import example
 from src.data.data_loader import DataLoader
@@ -35,7 +35,7 @@ def process_reconstruction(
     )
 
     # Get the X, Y data from the DataLoader
-    X, Y, Z = D[index]  # type: ignore
+    X, Y, Z = D[index]
 
     # Squeeze the arrays to remove single-dimensional entries
     X = X.squeeze()

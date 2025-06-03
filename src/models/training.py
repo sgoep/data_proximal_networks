@@ -1,7 +1,7 @@
 from typing import List
 
-import numpy as np  # type: ignore
-import torch  # type: ignore
+import numpy as np
+import torch
 
 from src.models.utils import get_data_loader, get_model, plot_losses
 from src.utils.radon_operator import get_radon_operators

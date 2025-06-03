@@ -1,8 +1,8 @@
 from os import listdir
 from os.path import isfile, join
 
-import numpy as np  # type: ignore
-import torch  # type: ignore
+import numpy as np
+import torch
 import torch_radon
 from pytorch_wavelets import DWTForward, DWTInverse
 from scipy import stats

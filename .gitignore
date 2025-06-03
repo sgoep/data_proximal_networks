@@ -1,14 +1,17 @@
 data/*
 
 plots/*
-results/
+results/*
 models/lodopab/
 models/synthetic/
+losses/*
 output_*
 run_*
 .*
+algorithms/__pycache__/
 
 # Byte-compiled / optimized / DLL files
+**/__pycache__/
 __pycache__/
 *.py[cod]
 *$py.class

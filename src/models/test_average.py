@@ -1,13 +1,13 @@
 import argparse
 
-import matplotlib.pyplot as plt  # type: ignore
-import numpy as np  # type: ignore
+import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
-import torch  # type: ignore
-from matplotlib.colors import Normalize  # type: ignore
-from skimage.metrics import mean_squared_error as mse  # type: ignore
-from skimage.metrics import peak_signal_noise_ratio as psnr  # type: ignore
-from skimage.metrics import structural_similarity as ssim  # type: ignore
+import torch
+from matplotlib.colors import Normalize
+from skimage.metrics import mean_squared_error as mse
+from skimage.metrics import peak_signal_noise_ratio as psnr
+from skimage.metrics import structural_similarity as ssim
 
 from src.data.data_loader import DataLoader
 from src.models.unet import UNet

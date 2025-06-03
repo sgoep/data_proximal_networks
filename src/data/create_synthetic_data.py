@@ -1,6 +1,6 @@
-import h5py  # type: ignore
-import numpy as np  # type: ignore
-import torch  # type: ignore
+import h5py
+import numpy as np
+import torch
 import torch_radon
 
 # from config import config

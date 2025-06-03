@@ -1,10 +1,10 @@
 from typing import List
 
 import matplotlib.pyplot as plt
-import numpy as np  # type: ignore
-import torch  # type: ignore
+import numpy as np
+import torch
 import torch_radon
-from matplotlib.colors import Normalize  # type: ignore
+from matplotlib.colors import Normalize
 
 from src.data.data_loader import DataLoader
 from src.data.utils import create_ellipse_example, create_lotus_example

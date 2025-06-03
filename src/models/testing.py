@@ -1,9 +1,9 @@
 import argparse
 
-import matplotlib.pyplot as plt  # type: ignore
-import numpy as np  # type: ignore
-import torch  # type: ignore
-from matplotlib.colors import Normalize  # type: ignore
+import matplotlib.pyplot as plt
+import numpy as np
+import torch
+from matplotlib.colors import Normalize
 
 from src.data.data_loader import DataLoader
 from src.models.unet import UNet
@@ -155,7 +155,7 @@ def test(example, model_names):
 
         model = UNet(1, 1, model_name, example).to(config.device)
         model.load_state_dict(torch.load(f"models/{example}/{model_name}.pth"))
-    
+
         model_output = model(Y)
 
         diff_recons = radon_full.forward(model_output - X)

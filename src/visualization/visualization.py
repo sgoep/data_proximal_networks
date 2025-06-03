@@ -65,9 +65,9 @@ def visualization_with_zoom(
         )
         ax.add_patch(rect)
         if example == "lodopab":
-            sub_axes = plt.axes([0.23, 0.075, 0.25, 0.25])  # type: ignore
+            sub_axes = plt.axes([0.23, 0.075, 0.25, 0.25])
         else:
-            sub_axes = plt.axes([0.2, 0.12, 0.25, 0.25])  # type: ignore
+            sub_axes = plt.axes([0.2, 0.12, 0.25, 0.25])
         for axis in ["top", "bottom", "left", "right"]:
             sub_axes.spines[axis].set_linewidth(1.5)
         sub_axes.imshow(x[a:b, c:d], cmap="gray", vmin=vmin, vmax=vmax)

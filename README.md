@@ -66,13 +66,32 @@ data/data_synthetic/
 ```
 afterwards.
 
-### 3. Train the network
+### 3. Define used network architectures
+
+Network architectures used for training and testing are defined in `example.py`. The name contains the initial reconstruction, i.e. Landweber iteration, TV or sparse $\ell_1$ regularization, followed by a residual, null-space or data-proximal null-space network, respectively.
+
+To remove experiments from the pipeline, comment or remove lines from this list:
+```bash
+models = [
+    "landweber_res",
+    "tv_res",
+    "ell1_res",
+    "landweber_nsn",
+    "tv_nsn",
+    "ell1_nsn",
+    "landweber_dp_nsn",
+    "tv_dp_nsn",
+    "ell1_dp_nsn",
+]
+```
+
+### 4. Train the network
 
 ```bash
 python -m src.models.training synthetic
 ```
 
-### 4. Evaluate
+### 5. Evaluate
 
 ```bash
 python -m src.models.testing synthetic

@@ -1,9 +1,7 @@
-data/data_lodopab/
-data/data_synthetic/
-data/LotusData128.mat
-data/LotusData256.mat
+data/*
+
 plots/*
-results/*
+results/
 models/lodopab/
 models/synthetic/
 output_*

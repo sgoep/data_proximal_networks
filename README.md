@@ -49,19 +49,30 @@ Evaluation metrics:
 ### 1. Clone and setup
 
 ```bash
-git clone https://github.com/your_username/data-proximal-ct.git
-cd data-proximal-ct
+git clone git@github.com:sgoep/data_proximal_networks.git
+cd data_proximal_networks
 conda env create -f environment.yml
 conda activate data_prox2
 ```
 
-### 2. Train the network
+### 2. Download synthetic data
+
+You can download the files for synthetic data from
+https://drive.google.com/drive/folders/1JJuDGj35XQEeDdDCUMgIuADHqThnNDf6?usp=share_link
+
+Put it into
+```bash
+data/data_synthetic/
+```
+afterwards.
+
+### 3. Train the network
 
 ```bash
 python -m src.models.training synthetic
 ```
 
-### 3. Evaluate
+### 4. Evaluate
 
 ```bash
 python -m src.models.testing synthetic

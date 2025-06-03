@@ -1,0 +1,12 @@
+{
+    "python.formatting.provider": "black",
+    "editor.formatOnSave": true,
+    "python.sortImportsOnSave": true,
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportGeneralTypeIssues": "none",
+        "reportOptionalMemberAccess": "none",
+        "reportOptionalSubscript": "none",
+        "reportUndefinedVariable": "none",
+        "reportUnboundVariable": "none"
+    }
+}

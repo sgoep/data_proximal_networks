@@ -1,0 +1,89 @@
+data/data_lodopab/
+data/data_synthetic/
+data/LotusData128.mat
+data/LotusData256.mat
+plots/*
+results/*
+models/lodopab/
+models/synthetic/
+output_*
+run_*
+.*
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# VS Code settings
+.vscode/
+
+# PyCharm settings
+.idea/
+
+# Python egg and build artifacts
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+sdist/
+wheels/
+pip-wheel-metadata/
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# mypy, pytype, Pyright
+.mypy_cache/
+.pytype/
+.pyre/
+
+# Pytest cache
+.pytest_cache/
+
+# Bandit security scanner
+bandit.yaml
+
+# Pylint, flake8, black etc.
+.pylint.d/
+*.log
+
+# dotenv
+.env
+.env.*
+
+# Jupyter runtime
+~$*
+.jupyter/
+.profile_default/

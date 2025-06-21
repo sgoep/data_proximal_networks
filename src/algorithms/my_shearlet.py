@@ -8,9 +8,7 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
-import torch_radon
 from alpha_transform import AlphaShearletTransform
-from alpha_transform import AlphaShearletTransform as AST
 from alpha_transform.fourier_util import my_ifft_shift
 
 

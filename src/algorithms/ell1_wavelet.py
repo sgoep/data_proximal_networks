@@ -1,8 +1,9 @@
+from typing import Union
+
 import torch
 import torch_radon
 from pytorch_wavelets import DWTForward, DWTInverse
 from torch_radon.solvers import cg
-from typing import Union
 
 
 def shrink(a, b):

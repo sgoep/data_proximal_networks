@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import torch
-from matplotlib.colors import Normalize
 from skimage.metrics import mean_squared_error as mse
 
 from src.data.data_loader import DataLoader
@@ -14,7 +13,6 @@ from src.utils.load_config import load_config
 from src.utils.parser import parse_nested_list
 from src.utils.radon_operator import get_radon_operators
 from src.utils.test_utils import method_latex_mapping
-from src.visualization.latex_figure import generate_latex_figure_block
 from src.visualization.visualization import visualization_with_zoom
 
 # Config options
@@ -237,21 +235,3 @@ if __name__ == "__main__":
     print("##############################################################")
     test(example=args.example, model_names=model_names)
     print(f"Testing completed for {args.example}.")
-
-
-import matplotlib.pyplot as plt
-
-# %%
-import numpy as np
-
-x = np.load("results/figures/0000-synthetic_ell1_dp_nsn_image.npy")
-y = np.load("results/figures/0000-synthetic_ell1_dp_nsn_data.npy")
-
-vmin = 0
-vmax = np.max(x)
-
-plt.figure()
-plt.imshow(x, cmap="gray", vmin=vmin, vmax=vmax)
-
-plt.figure()
-plt.imshow(y, cmap="gray")

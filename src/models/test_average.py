@@ -1,23 +1,19 @@
 import argparse
 
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import torch
-from matplotlib.colors import Normalize
 from skimage.metrics import mean_squared_error as mse
 from skimage.metrics import peak_signal_noise_ratio as psnr
 from skimage.metrics import structural_similarity as ssim
 
 from src.data.data_loader import DataLoader
 from src.models.unet import UNet
-from src.models.utils import extension_with_zero, get_data_loader
+from src.models.utils import extension_with_zero
 from src.utils.load_config import load_config
 from src.utils.parser import parse_nested_list
 from src.utils.radon_operator import get_radon_operators
 from src.utils.test_utils import method_latex_mapping
-from src.visualization.latex_figure import generate_latex_figure_block
-from src.visualization.visualization import visualization_with_zoom
 
 
 def test(example, model_names):

@@ -1,7 +1,8 @@
+from typing import Union
+
 import torch
 import torch_radon
 from torch_radon.solvers import cg
-from typing import Union
 
 from .my_shearlet import ShearletTransform
 
@@ -61,11 +62,7 @@ def ell1_shearlet(
 
     w = 3**shearlet.scales / 400
     w = shearlet.scales
-    # print(w)
-    # w = torch.Tensor([0, 0.5, 1])
     w = w.view(-1, 1, 1).cuda()
-    # print(w)
-    # print(w.shape)
 
     u_1 = torch.zeros_like(sc)
     z_1 = torch.zeros_like(sc)

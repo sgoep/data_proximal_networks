@@ -1,4 +1,3 @@
-import numpy as np
 import pandas as pd
 from skimage.metrics import mean_squared_error as mse
 from skimage.metrics import peak_signal_noise_ratio as psnr

@@ -41,15 +41,6 @@ def my_div(Px: torch.Tensor, Py: torch.Tensor) -> torch.Tensor:
     fy[:, -1] = -Py[:, -2]
 
     return fx + fy
-    # # Divergence along x (horizontal)
-    # div_x = Px[:, 1:] - Px[:, :-1]
-    # div_x = torch.cat((torch.zeros_like(div_x[:, :1]), div_x), dim=-1)  # Pad to keep same shape
-
-    # # Divergence along y (vertical)
-    # div_y = Py[1:, :] - Py[:-1, :]
-    # div_y = torch.cat((torch.zeros_like(div_y[:1, :]), div_y), dim=-2)  # Pad to keep same shape
-
-    # return div_x + div_y
 
 
 def tv(
@@ -147,11 +138,13 @@ def tv(
 
 if __name__ == "__main__":
     print("Running TV example reconstruction.")
-    from src.utils.load_single_image import load_single_image
 
     print("Load image.")
     device = "cuda"
-    phantom = load_single_image()
+
+    images = (h5py.File("data/randshepp.mat")["data"][:]).transpose([-1, 0, 1])
+    phantom = images[0, :, :]
+    phantom = phantom / np.max(phantom)
 
     x = torch.Tensor(phantom).to(device)
     Nal = 80

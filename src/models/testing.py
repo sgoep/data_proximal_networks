@@ -18,10 +18,6 @@ from src.visualization.visualization import visualization_with_zoom
 zoom, colorbar = True, False
 
 
-def normalize_data(data):
-    return (data - torch.min(data)) / (torch.max(data) - torch.min(data))
-
-
 def get_sample(index, example, initrecon, initial_regul, test_train, config):
     D = DataLoader(
         np.arange(0, index + 1),
@@ -38,35 +34,9 @@ def get_sample(index, example, initrecon, initial_regul, test_train, config):
     )
 
 
-def process_reconstruction(
-    index, example, initrecon, initial_regul, test_train, label, config, radon_limited
-):
-    D = DataLoader(
-        np.arange(0, index + 1),
-        initrecon=initrecon,
-        example=example,
-        initial_regul=initial_regul,
-        test_train=test_train,
-    )
-    X, Y, _ = D[index]
-    print_errors(Y.squeeze(), X.squeeze())
-    visualization_with_zoom(
-        example,
-        Y.squeeze(),
-        zoom,
-        colorbar,
-        f"results/figures/{example}/0000-{example}_{label}.pdf",
-    )
-
-    return calc_errors(Y, X), calc_errors(
-        radon_limited.forward(Y).cpu().numpy().squeeze(),
-        radon_limited.forward(X).cpu().numpy().squeeze(),
-    )
-
-
 def test(example, model_names):
     config = load_config(example)
-    radon_full, radon_limited, radon_null_space = get_radon_operators(example)
+    radon_full, radon_limited, _ = get_radon_operators(example)
     index = 1366
     # index = 10
     plotted = False

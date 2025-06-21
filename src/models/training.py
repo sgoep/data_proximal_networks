@@ -1,5 +1,3 @@
-from typing import List
-
 import numpy as np
 import torch
 
@@ -24,8 +22,6 @@ def train(example: str, model_name: str, config):
         print(f"Start training of {model_name} with factor {config.factor}.")
     else:
         print(f"Start training of {model_name}, initial recon: {initial_regul}.")
-
-    radon_full, radon_limited, radon_null_space = get_radon_operators(example)
 
     best_test_loss = float("inf")
     best_model_params = None

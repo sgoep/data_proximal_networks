@@ -1,3 +1,6 @@
+⚠️ **Note:** This repository is currently under active development. Expect potential instability.
+
+
 # Data-Proximal Neural Networks for Limited-View CT
 
 This repository contains the code accompanying the poster **"Data-Proximal Neural Networks for Limited-View CT"** presented at BVM 2025. The project implements and evaluates a family of neural network architectures designed for consistent and artifact-reduced image reconstruction from limited-angle CT measurements.

@@ -10,46 +10,6 @@ import torch.optim as optim
 # from example import example
 from src.data.data_loader import DataLoader
 from src.models.unet import UNet
-from src.utils.test_utils import calc_errors, print_errors
-from src.visualization.visualization import visualization_with_zoom
-
-# from src.models.utils import init_weights
-
-# from config import config
-
-# config = load_config(example)
-
-
-def process_reconstruction(
-    index, example, initrecon, initial_regul, test_train, label, zoom, colorbar
-):
-    print(f"{label}.")
-
-    # Load data using DataLoader
-    D = DataLoader(
-        np.arange(0, index + 1),
-        initrecon=initrecon,
-        example=example,
-        initial_regul=initial_regul,
-        test_train=test_train,
-    )
-
-    # Get the X, Y data from the DataLoader
-    X, Y, Z = D[index]
-
-    # Squeeze the arrays to remove single-dimensional entries
-    X = X.squeeze()
-    Y = Y.squeeze()
-
-    # Print the errors
-    print_errors(Y, X)
-
-    # Visualize the result
-    visualization_with_zoom(
-        example, Y, zoom, colorbar, f"results/figures/0000-{example}_{label}.pdf"
-    )
-    print("##############################################################")
-    return calc_errors(Y, X)
 
 
 def data_prox_func(X: torch.Tensor, beta: torch.Tensor) -> torch.Tensor:

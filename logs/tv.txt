@@ -1,0 +1,56 @@
+Running TV example reconstruction.
+Load image.
+Create RadonAdapter and data.
+Run TV regularization.
+TV Iteration: 100/5000, Error: 0.590728
+TV Iteration: 200/5000, Error: 0.417109
+TV Iteration: 300/5000, Error: 0.603173
+TV Iteration: 400/5000, Error: 0.281749
+TV Iteration: 500/5000, Error: 0.114182
+TV Iteration: 600/5000, Error: 0.221731
+TV Iteration: 700/5000, Error: 0.255248
+TV Iteration: 800/5000, Error: 0.13176
+TV Iteration: 900/5000, Error: 0.0870963
+TV Iteration: 1000/5000, Error: 0.203903
+TV Iteration: 1100/5000, Error: 0.24582
+TV Iteration: 1200/5000, Error: 0.15028
+TV Iteration: 1300/5000, Error: 0.110054
+TV Iteration: 1400/5000, Error: 0.183072
+TV Iteration: 1500/5000, Error: 0.217152
+TV Iteration: 1600/5000, Error: 0.143541
+TV Iteration: 1700/5000, Error: 0.0996748
+TV Iteration: 1800/5000, Error: 0.161946
+TV Iteration: 1900/5000, Error: 0.183926
+TV Iteration: 2000/5000, Error: 0.108918
+TV Iteration: 2100/5000, Error: 0.0746017
+TV Iteration: 2200/5000, Error: 0.129713
+TV Iteration: 2300/5000, Error: 0.155248
+TV Iteration: 2400/5000, Error: 0.0965593
+TV Iteration: 2500/5000, Error: 0.0650532
+TV Iteration: 2600/5000, Error: 0.107574
+TV Iteration: 2700/5000, Error: 0.115705
+TV Iteration: 2800/5000, Error: 0.0647609
+TV Iteration: 2900/5000, Error: 0.0533818
+TV Iteration: 3000/5000, Error: 0.0966464
+TV Iteration: 3100/5000, Error: 0.105432
+TV Iteration: 3200/5000, Error: 0.0569723
+TV Iteration: 3300/5000, Error: 0.0392723
+TV Iteration: 3400/5000, Error: 0.0737808
+TV Iteration: 3500/5000, Error: 0.0798635
+TV Iteration: 3600/5000, Error: 0.0468212
+TV Iteration: 3700/5000, Error: 0.0395863
+TV Iteration: 3800/5000, Error: 0.0648698
+TV Iteration: 3900/5000, Error: 0.0668557
+TV Iteration: 4000/5000, Error: 0.0381571
+TV Iteration: 4100/5000, Error: 0.0341059
+TV Iteration: 4200/5000, Error: 0.0601748
+TV Iteration: 4300/5000, Error: 0.0608391
+TV Iteration: 4400/5000, Error: 0.0329085
+TV Iteration: 4500/5000, Error: 0.0267133
+TV Iteration: 4600/5000, Error: 0.0498561
+TV Iteration: 4700/5000, Error: 0.0572877
+TV Iteration: 4800/5000, Error: 0.0364375
+TV Iteration: 4900/5000, Error: 0.0283327
+TV Iteration: 5000/5000, Error: 0.0442048
+Plotting.
+Finished.

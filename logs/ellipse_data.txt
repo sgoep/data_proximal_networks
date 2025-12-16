@@ -1,0 +1,25 @@
+Generating data...
+Selecting TV alpha...
+alpha=0.001: mean rel L2 = 4.4858e-01
+alpha=0.001438449888287663: mean rel L2 = 4.3603e-01
+alpha=0.00206913808111479: mean rel L2 = 4.2012e-01
+alpha=0.002976351441631319: mean rel L2 = 3.9907e-01
+alpha=0.004281332398719396: mean rel L2 = 3.7058e-01
+alpha=0.006158482110660266: mean rel L2 = 3.3410e-01
+alpha=0.008858667904100823: mean rel L2 = 2.9307e-01
+alpha=0.012742749857031334: mean rel L2 = 2.5350e-01
+alpha=0.018329807108324356: mean rel L2 = 2.2182e-01
+alpha=0.02636650898730358: mean rel L2 = 2.0194e-01
+alpha=0.037926901907322494: mean rel L2 = 1.9343e-01
+alpha=0.05455594781168517: mean rel L2 = 1.9333e-01
+alpha=0.0784759970351461: mean rel L2 = 1.9853e-01
+alpha=0.11288378916846883: mean rel L2 = 2.0721e-01
+alpha=0.1623776739188721: mean rel L2 = 2.1906e-01
+alpha=0.23357214690901212: mean rel L2 = 2.3343e-01
+alpha=0.3359818286283781: mean rel L2 = 2.5073e-01
+alpha=0.48329302385717526: mean rel L2 = 2.7077e-01
+alpha=0.6951927961775605: mean rel L2 = 2.9324e-01
+alpha=1.0: mean rel L2 = 3.1791e-01
+Best alpha: 0.05455594781168517
+Running final TV reconstructions...
+Done. Data saved to: /home/simon/projects/data_proximal_networks/ellipses_out

@@ -1,4 +1,11 @@
 data/*
+data_backup/*
+*.txt
+ellipses_out/*
+lodopab_out/*
+
+runs_ellipses/*
+runs_lodopab/*
 
 plots/*
 results/*

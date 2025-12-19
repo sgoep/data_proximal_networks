@@ -3,6 +3,7 @@ data_backup/*
 *.txt
 ellipses_out/*
 lodopab_out/*
+logs/*
 
 runs_ellipses/*
 runs_lodopab/*

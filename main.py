@@ -73,6 +73,9 @@ def main(example):
     # INIT_METHODS = ["lw", "tv"]
     # MODELS_TO_TRAIN = ["dpnsn"]
 
+    # INIT_METHODS = ["tv", "lw"]
+    # MODELS_TO_TRAIN = ["dpnsn_huber"]
+
     EPOCHS = 50
     BATCH_SIZE = 16
     LR = 1e-4
@@ -216,7 +219,7 @@ def main(example):
 
 
 if __name__ == "__main__":
-    main(example="lodopab")
+    main(example="ellipses")
     print("Finished.")
 
 # sbatch -p a6000 -w mp-gpu4-a6000-2 --job-name=train -o logs/train.txt --time=30-00:00:00 --wrap="python -u main.py"

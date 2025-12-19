@@ -62,7 +62,7 @@ class DPNSN_RES(nn.Module):
         super().__init__()
         self.unet = unet
         self.radon = radon
-        self.beta = beta
+        self.beta = beta 
 
     @staticmethod
     def _proj_l2_ball(v: torch.Tensor, radius: float) -> torch.Tensor:

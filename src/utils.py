@@ -7,8 +7,14 @@ from typing import List, Union, Dict
 from src.radon import RadonAdapter
 import torch.nn as nn
 import matplotlib.pyplot as plt
-
+import math
 from torch.utils.data import DataLoader
+try:
+    from skimage.metrics import peak_signal_noise_ratio as sk_psnr
+    from skimage.metrics import structural_similarity as sk_ssim
+    _HAS_SKIMAGE = True
+except Exception:
+    _HAS_SKIMAGE = False
 
 @torch.no_grad()
 def save_example_outputs(
@@ -52,10 +58,34 @@ def save_example_outputs(
     plt.savefig(out_path, dpi=200)
     plt.close(fig)
 
+def rel_l2_np(x: np.ndarray, y: np.ndarray) -> float:
+    num = np.linalg.norm(x - y)
+    den = np.linalg.norm(y)
+    return float(num / (den + 1e-12))
+
 def rel_l2(x: torch.Tensor, x_gt: torch.Tensor, eps: float = 1e-12) -> float:
     num = torch.linalg.norm((x - x_gt).reshape(-1))
     den = torch.linalg.norm(x_gt.reshape(-1)).clamp_min(eps)
     return float((num / den).item())
+
+def psnr(x: np.ndarray, y: np.ndarray) -> float:
+    mse = float(np.mean((x - y) ** 2))
+    if mse <= 0.0:
+        return float("inf")
+    data_range = float(y.max() - y.min())
+    if data_range <= 0.0:
+        data_range = 1.0
+    return float(20.0 * math.log10(data_range) - 10.0 * math.log10(mse))
+
+
+def ssim(x: np.ndarray, y: np.ndarray) -> float:
+    if not _HAS_SKIMAGE:
+        return float("nan")
+    data_range = float(y.max() - y.min())
+    if data_range <= 0.0:
+        data_range = 1.0
+    return float(sk_ssim(y, x, data_range=data_range))
+
 
 def ensure_dir(p: Path) -> None:
     p.mkdir(parents=True, exist_ok=True)

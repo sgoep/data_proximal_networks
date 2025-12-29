@@ -60,7 +60,7 @@ def div_backward(px: torch.Tensor, py: torch.Tensor):
     div = div_x + div_y
     return div
 
-# --------- TV solver (Chambolle–Pock style) ---------
+# --------- TV solver (Chambolle-Pock style) ---------
 
 @torch.no_grad()
 def tv_cp(
@@ -77,7 +77,58 @@ def tv_cp(
     print_flag: bool = True,
     grad_scale: float = 1e2,
 ) -> torch.Tensor:
+    """
+    Chambolle-Pock primal-dual algorithm for TV-regularized inverse problems.
 
+    This function solves a problem of the form:
+
+        minimize_u  0.5 * ||A u - g||_2^2 + alpha * TV(u)
+        subject to  u >= 0
+
+    using a first-order primal-dual method (Chambolle-Pock).
+    The total variation (TV) term is implemented via dual variables associated
+    with forward finite differences, and a non-negativity constraint is enforced
+    by projection onto the positive orthant.
+
+    Parameters
+    ----------
+    x0 : torch.Tensor
+        Initial primal variable (image estimate), shape (B, C, H, W).
+    A : callable
+        Forward operator. Must accept a tensor shaped like `x0` and return
+        a tensor shaped like `g` (e.g. Radon transform).
+    AT : callable
+        Adjoint (backprojection) operator corresponding to `A`.
+        Must accept a tensor shaped like `g` and return a tensor shaped like `x0`.
+    g : torch.Tensor
+        Measured data (e.g. sinogram), shape compatible with `A(x0)`.
+    alpha : float
+        Total variation regularization weight. If alpha <= 0, TV is disabled
+        and the method reduces to a non-negative least-squares update.
+    tau : float
+        Primal step size.
+    sigma : float
+        Dual step size.
+    theta : float
+        Extrapolation parameter (typically in [0, 1]).
+    Niter : int
+        Number of Chambolle-Pock iterations.
+    ground_truth : torch.Tensor, optional
+        Reference solution for error monitoring only.
+        If provided, relative L2 error is printed every 100 iterations.
+    print_flag : bool, default=True
+        If True, print progress information during iterations.
+    grad_scale : float, default=1e2
+        Scaling factor applied to the TV gradient/divergence operators.
+        This is useful when the discrete gradient magnitude is small
+        compared to the data-fidelity term.
+
+    Returns
+    -------
+    ubar : torch.Tensor
+        Final reconstructed image (extrapolated primal variable).
+    """
+    
     device = x0.device
     dtype = x0.dtype
 

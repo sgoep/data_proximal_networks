@@ -127,6 +127,23 @@ def filter_sinogram(
 
 
 class RadonAdapter:
+    """
+    Convenience wrapper around torch_radon.Radon that adds:
+
+    - Optional limited-angle masking via a (lo, hi) angle interval `phi`
+      producing:
+        * ran mask: angles in [lo, hi)
+        * nsn mask: complement of ran mask
+    - Forward / backward operator calls with a pixel size scaling `dx`
+    - Limited-angle versions (forward_la, backward_la, fbp_la)
+    - Optional power-iteration estimate of operator norm ||A|| and ||A||^2
+
+    Notes
+    -----
+    Input / output tensor shapes for torch_radon.Radon are typically:
+      x: (B, C, resolution, resolution)
+      y: (B, C, n_angles, det_count)
+    """
     def __init__(
         self,
         resolution: int,
@@ -141,6 +158,33 @@ class RadonAdapter:
         dtype: torch.dtype = torch.float32,
         phi: Optional[Tuple[float, float]] = None,
     ):
+        """
+        Parameters
+        ----------
+        resolution : int
+            Image resolution (square image).
+        angles : np.ndarray
+            Projection angles in radians (torch_radon expects float32).
+        det_count : int
+            Number of detector bins.
+        clip_to_circle : bool
+            If True, Radon transform only considers the inscribed circle.
+        dataset : str or None
+            Optional dataset name (stored but not used by core logic).
+        dx : float
+            Pixel spacing / scaling. forward multiplies by dx and backward divides by dx.
+        estimate_norm : bool
+            If True, estimate ||A|| and ||A||^2 via power iteration.
+        norm_iters : int
+            Max iterations for norm estimation.
+        device : torch.device or None
+            Where to store masks and run norm estimation.
+        dtype : torch.dtype
+            dtype for masks and norm estimation.
+        phi : (float, float) or None
+            Limited-angle interval [lo, hi) in same units as `angles`.
+            IMPORTANT: current code assumes phi is not None; otherwise mask building fails.
+        """
         self.base = Radon(
             resolution=resolution,
             angles=np.asarray(angles, dtype=np.float32),
@@ -170,12 +214,23 @@ class RadonAdapter:
             self._estimate_operator_norm(iters=norm_iters)
 
     def _build_ran_mask_np(self) -> np.ndarray:
+        """
+        Build a limited-angle mask selecting angles in [lo, hi).
+
+        Returns
+        -------
+        mask : np.ndarray, shape (1, 1, n_angles, det_count)
+            1.0 for angles in-range, 0.0 otherwise.
+        """
         lo, hi = self.phi
         ang_mask = ((self.angles >= lo) & (self.angles < hi)).astype(np.float32)
         mask2d = np.repeat(ang_mask.reshape(-1, 1), self.det_count, axis=1)
         return mask2d[None, None, :, :].astype(np.float32)  
 
     def _build_null_mask_np(self) -> np.ndarray:
+        """
+        Complement mask: 1 where angles are NOT in [lo, hi), 0 otherwise.
+        """
         return 1.0 - self._build_ran_mask_np()
 
     # @torch.no_grad()
@@ -183,48 +238,75 @@ class RadonAdapter:
     #     return y * self._phi_mask.to(device=y.device, dtype=y.dtype)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """
+        Apply Radon forward A x.
+
+        Scaling: multiplies by dx, which can be used to reflect pixel spacing.
+        """
+
         y = self.base.forward(x) * self.dx
         return y
         # return self._apply_phi(y)
 
     def forward_la(self, x: torch.Tensor) -> torch.Tensor:
+        """
+        Limited-angle forward projection:
+          y = P_phi (A x)
+        where P_phi masks angles in [lo, hi).
+        """
         y = self.forward(x)
         return self.proj_ran(y)
     
     def backward_la(self, y: torch.Tensor) -> torch.Tensor:
+        """
+        Limited-angle backprojection:
+          x = A^T (P_phi y)
+        """
         y = self.proj_ran(y)
         return self.backward(y)
     
     def backward(self, y: torch.Tensor) -> torch.Tensor:
-        # y = self._apply_phi(y)
+        """
+        Apply adjoint / backprojection A^T y.
+
+        Scaling: divides by dx to be consistent with forward() scaling.
+        """
         return self.base.backward(y / self.dx)
     
     def fbp_la(self, y: torch.Tensor, filter_name: str = "ram-lak") -> torch.Tensor:
-        # y = self._apply_phi(y)
+        """
+        Limited-angle filtered backprojection (FBP):
+
+          x = A^T ( F( P_phi y ) )
+
+        where F is 1D detector filtering.
+        """
         return self.backward(filter_sinogram(self.proj_ran(y), filter_name=filter_name))
 
     def fbp(self, y: torch.Tensor, filter_name: str = "ram-lak") -> torch.Tensor:
-        # y = self._apply_phi(y)
+        """
+        Full-angle filtered backprojection (FBP):
+
+          x = A^T ( F( y ) )
+        """
         return self.backward(filter_sinogram(y, filter_name=filter_name))
 
     def proj_nsn(self, y: torch.Tensor) -> torch.Tensor:
+        """
+        Project onto the 'null' (complement) angle set by masking y.
+
+        Returns y * nsn_mask.
+        """
         return y * self._nsn_mask.to(device=y.device, dtype=y.dtype)
 
     def proj_ran(self, y: torch.Tensor) -> torch.Tensor:
-        # print(self._ran_mask.to(device=y.device, dtype=y.dtype).shape)
+        """
+        Project onto the 'range' (selected) angle set by masking y.
+
+        Returns y * ran_mask.
+        """
         return y * self._ran_mask.to(device=y.device, dtype=y.dtype)
     
-
-    # @torch.no_grad()
-    # def proj_nsn(self, x: torch.Tensor) -> torch.Tensor:
-    #     y = self.forward(x) * self._nsn_mask.to(device=x.device, dtype=x.dtype)
-    #     return self.fbp(y)
-
-    # @torch.no_grad()
-    # def proj_ran(self, x: torch.Tensor) -> torch.Tensor:
-    #     y = self.forward(x) * self._ran_mask.to(device=x.device, dtype=x.dtype)
-    #     return self.fbp(y)
-
     @torch.no_grad()
     def _estimate_operator_norm(
         self,
@@ -232,6 +314,25 @@ class RadonAdapter:
         tol: float = 1e-6,
         seed: int = 0,
     ) -> None:
+        """
+        Estimate ||A|| and ||A||^2 for the forward operator using power iteration on A^T A.
+
+        We iterate:
+          x_{k+1} = (A^T A x_k) / ||A^T A x_k||
+        and estimate the dominant eigenvalue lambda ≈ x^T (A^T A x) / (x^T x).
+        Then:
+          ||A||^2 = lambda
+          ||A||   = sqrt(lambda)
+
+        Parameters
+        ----------
+        iters : int
+            Maximum number of iterations.
+        tol : float
+            Relative convergence tolerance on lambda.
+        seed : int
+            RNG seed for reproducible initialization.
+        """
         g = torch.Generator(device=self.device)
         g.manual_seed(seed)
 

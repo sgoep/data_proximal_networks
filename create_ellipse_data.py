@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-# prepare_ellipses_fbp_tv.py
-
 import os
 import json
 from pathlib import Path
@@ -58,7 +55,6 @@ def main():
 
     # radon
     dx = 1.0
-    # angles = np.linspace(-np.pi/2, np.pi/2, NUM_ANGLES, endpoint=False).astype(np.float32)
     angles = np.arange(-90, 90) * np.pi/180
     phi = (-np.pi/3, np.pi/3)
     radon = RadonAdapter(
@@ -160,23 +156,6 @@ def main():
         np.save(OUT_DIR / "tv" / f"{i:05d}.npy", x_tv.detach().cpu().numpy())
         np.save(OUT_DIR / "lw" / f"{i:05d}.npy", x_lw.detach().cpu().numpy())
 
-    # summary = {
-    #     "n_samples": N_SAMPLES,
-    #     "noise_sigma_rel": NOISE_sigma_REL,
-    #     "mean_norm_y_minus_y_delta": float(y_diff_norms.mean()),
-    #     "tv_alpha_grid": TV_ALPHA_GRID.tolist(),
-    #     "tv_alpha_errors_subset": alpha_errors,
-    #     "tv_best_alpha": best_alpha,
-    #     "lw_iters": LW_ITERS,
-    #     "lw_omega": omega,
-    #     "lw_omega_factor": LW_OMEGA_FACTOR,
-    #     "img_size": IMG_SIZE,
-    #     "num_angles": NUM_ANGLES,
-    #     "angles": angles.tolist(),
-    #     "phi": list(phi),
-    #     "det_count": DET_COUNT,
-    #     "device": DEVICE,
-    # }
     summary = {
         "dataset": "ellipse",
         "part": None,
